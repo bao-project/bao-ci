@@ -1,3 +1,5 @@
+ci_dir:=$(realpath ci)
+
 CPPCHECK?=cppcheck
 CLANG_VERSION?=12
 CLANG-FORMAT?=clang-format-$(CLANG_VERSION)
@@ -5,18 +7,22 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 
 #############################################################################
 
+clang_format_flags:=--style=file
+
 define format
 format:
-	@$(CLANG-FORMAT) --style=file -i $1
+	@$(CLANG-FORMAT) $(clang_format_flags) -i $1
+
 format-check:
-	@diff <(cat $1) <($(CLANG-FORMAT) --style=file $1)
+	@diff <(cat $1) <($(CLANG-FORMAT) $(clang_format_flags) $1)
 endef
 
 #############################################################################
 
 define tidy
 tidy:
-	@$(CLANG-TIDY) $1 -- --target=$(clang-arch) $(CPPFLAGS)
+	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $1 -- \
+		--target=$(clang-arch) $(CPPFLAGS)
 endef
 
 #############################################################################

@@ -5,6 +5,7 @@ FROM ubuntu:20.04
 ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
 ARG RISCV_TOOLCHAIN_LINK=https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
 ARG CLANG_VERSION=12
+ARG CPPCHECK_LINK=https://github.com/danmar/cppcheck/archive/refs/tags/2.6.tar.gz
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
@@ -14,11 +15,9 @@ RUN apt-get update && apt-get install -y \
         build-essential \
         gcc-multilib \
         clang-format-$CLANG_VERSION \
-        clang-tidy-$CLANG_VERSION \
-        cppcheck
-
-# install toolchains
-RUN mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
+        clang-tidy-$CLANG_VERSION && \
+    mkdir /opt/cppcheck && curl -L $CPPCHECK_LINK | tar xz -C /opt/cppcheck --strip-components=1 && make -C /opt/cppcheck && \
+    mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1
 
 # Add generic non-root user
@@ -27,6 +26,7 @@ RUN addgroup bao && adduser -disabled-password --ingroup bao bao
 # setup environment
 ENV PATH=$PATH:/opt/aarch64-toolchain/bin
 ENV PATH=$PATH:/opt/riscv-toolchain/bin
+ENV PATH=$PATH:/opt/cppcheck
 
 # default startup command
 CMD /bin/bash

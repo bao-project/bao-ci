@@ -28,4 +28,8 @@ all .DEFAULT:
 		$(docker_repo)/$(docker_image):$(docker_tag) $(MAKE) $(MAKEFLAGS) $(MAKEOVERRIDES) $@
 	@echo "Leaving and destroying docker container..."
 
+build:
+	@echo "Launching docker container..."
+	@$(DOCKER) build -t $(docker_image) .
+
 .PHONY: all

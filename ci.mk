@@ -37,4 +37,33 @@ endef
 
 #############################################################################
 
+misra_dir:=$(ci_dir)/misra
+misra_rules:=$(misra_dir)/rules.txt
+cppcheck_misra_addon:=$(misra_dir)/misra.json
+cppcheck_misra_flags:= --quiet --suppress=all --error-exitcode=1 --addon=$(cppcheck_misra_addon) $(CPPFLAGS)
+zephyr_coding_guidelines:=https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/doc/contribute/coding_guidelines/index.rst
+
+ifeq ($(MISRA_C2012_GUIDELINES),)
+$(misra_rules):
+	@echo "Appendix A Summary of guidelines" > $@
+	-@wget -q -O - $(zephyr_coding_guidelines) | grep "\* -  Rule" -A 2 | sed -n '2~2!s/\(.\{9\}\)//p' >> $@
+else
+$(misra_rules):
+	@pdftotext $(MISRA_C2012_GUIDELINES) $@
+endif
+
+define misra
+misra-check: $(misra_rules)
+	@$(CPPCHECK) $(cppcheck_misra_flags) $1
+
+misra-clean:
+	-rm -f $(misra_rules)
+	-find . -name "*.dump" | xargs rm -f
+
+endef
+
+clean: misra-clean
+
+#############################################################################
+
 ci-rule=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))

@@ -8,13 +8,23 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 #############################################################################
 
 clang_format_flags:=--style=file
+format_file:=$(root_dir)/.clang-format
+original_format_file:=$(ci_dir)/.clang-format
 
 define format
-format:
+$(format_file): $(original_format_file)
+	@cp $$< $$@
+
+format: $(format_file)
 	@$(CLANG-FORMAT) $(clang_format_flags) -i $1
 
-format-check:
+format-check: $(format_file)
 	@diff <(cat $1) <($(CLANG-FORMAT) $(clang_format_flags) $1)
+
+format-clean:
+	-@rm $(format_file)
+
+clean: format-clean
 endef
 
 #############################################################################

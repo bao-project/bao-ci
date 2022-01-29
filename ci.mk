@@ -27,6 +27,7 @@ format-clean:
 clean: format-clean
 
 .PHONY: format format-check format-clean
+non_build_targets+=format format-check format-clean
 endef
 
 #############################################################################
@@ -37,6 +38,7 @@ tidy:
 		--target=$(clang-arch) $(CPPFLAGS) 2> /dev/null
 
 .PHONY: tidy
+non_build_targets+=tidy
 endef
 
 #############################################################################
@@ -49,6 +51,7 @@ cppcheck:
 	@$(CPPCHECK) $(cppcheck_flags) $(addprefix -I , $(std_incs)) $1
 
 .PHONY: cppcheck
+non_build_targets+=cppcheck
 endef
 
 #############################################################################
@@ -79,6 +82,7 @@ misra-clean:
 clean: misra-clean
 
 .PHONY: misra-check misra-clean
+non_build_targets+=misra-check misra-clean
 endef
 
 #############################################################################

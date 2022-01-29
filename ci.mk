@@ -22,7 +22,7 @@ format-check: $(format_file)
 	@diff <(cat $1) <($(CLANG-FORMAT) $(clang_format_flags) $1)
 
 format-clean:
-	-@rm $(format_file)
+	-@rm -f $(format_file)
 
 clean: format-clean
 

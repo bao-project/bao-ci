@@ -34,7 +34,7 @@ endef
 define tidy
 tidy:
 	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $1 -- \
-		--target=$(clang-arch) $(CPPFLAGS)
+		--target=$(clang-arch) $(CPPFLAGS) 2> /dev/null
 
 .PHONY: tidy
 endef

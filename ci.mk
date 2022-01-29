@@ -25,6 +25,8 @@ format-clean:
 	-@rm $(format_file)
 
 clean: format-clean
+
+.PHONY: format format-check format-clean
 endef
 
 #############################################################################
@@ -33,6 +35,8 @@ define tidy
 tidy:
 	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $1 -- \
 		--target=$(clang-arch) $(CPPFLAGS)
+
+.PHONY: tidy
 endef
 
 #############################################################################
@@ -43,6 +47,8 @@ std_incs:=$(shell $(CROSS_COMPILE)gcc -E -Wp,-v -xc /dev/null 2>&1 | grep "^ ")
 define cppcheck
 cppcheck:
 	@$(CPPCHECK) $(cppcheck_flags) $(addprefix -I , $(std_incs)) $1
+
+.PHONY: cppcheck
 endef
 
 #############################################################################
@@ -72,6 +78,7 @@ misra-clean:
 
 clean: misra-clean
 
+.PHONY: misra-check misra-clean
 endef
 
 #############################################################################

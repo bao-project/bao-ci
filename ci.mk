@@ -70,9 +70,9 @@ misra-clean:
 	-rm -f $(misra_rules)
 	-find . -name "*.dump" | xargs rm -f
 
-endef
-
 clean: misra-clean
+
+endef
 
 #############################################################################
 

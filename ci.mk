@@ -43,7 +43,9 @@ endef
 
 #############################################################################
 
-cppcheck_flags:= --quiet --enable=all --error-exitcode=1 $(CPPFLAGS)
+cppcheck_suppressions:=$(ci_dir)/.cppcheck-suppress
+cppcheck_flags:= --quiet --enable=all  --error-exitcode=1 \
+	--suppressions-list=$(cppcheck_suppressions) $(CPPFLAGS)
 std_incs:=$(shell $(CROSS_COMPILE)gcc -E -Wp,-v -xc /dev/null 2>&1 | grep "^ ")
 
 define cppcheck

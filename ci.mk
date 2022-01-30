@@ -44,13 +44,12 @@ endef
 #############################################################################
 
 cppcheck_suppressions:=$(ci_dir)/.cppcheck-suppress
-cppcheck_flags:= --quiet --enable=all  --error-exitcode=1 \
+cppcheck_flags:= --quiet --enable=all --error-exitcode=1 \
 	--suppressions-list=$(cppcheck_suppressions) $(CPPFLAGS)
-std_incs:=$(shell $(CROSS_COMPILE)gcc -E -Wp,-v -xc /dev/null 2>&1 | grep "^ ")
 
 define cppcheck
 cppcheck:
-	@$(CPPCHECK) $(cppcheck_flags) $(addprefix -I , $(std_incs)) $1
+	@$(CPPCHECK) $(cppcheck_flags) $1
 
 .PHONY: cppcheck
 non_build_targets+=cppcheck

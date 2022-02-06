@@ -43,16 +43,28 @@ endef
 
 #############################################################################
 
+cppcheck_type_cfg:=$(ci_dir)/.cppcheck-types.cfg
+cppcheck_type_cfg_src:=$(ci_dir)/cppcheck-types.c
+
+$(cppcheck_type_cfg): $(cppcheck_type_cfg_src)
+	@$(cc) -S -o - $< | grep "\->" | sed -r 's/.*->//g' > $@
+
 cppcheck_suppressions:=$(ci_dir)/.cppcheck-suppress
 cppcheck_flags:= --quiet --enable=all --error-exitcode=1 \
+	--library=$(cppcheck_type_cfg) \
 	--suppressions-list=$(cppcheck_suppressions) $(CPPFLAGS)
 
 define cppcheck
-cppcheck:
+cppcheck: $(cppcheck_type_cfg)
 	@$(CPPCHECK) $(cppcheck_flags) $1
 
+cppcheck-clean:
+	@rm -f $(cppcheck_type_cfg)
+
+clean: cppcheck-clean
+
 .PHONY: cppcheck
-non_build_targets+=cppcheck
+non_build_targets+=cppcheck cppcheck-clean
 endef
 
 #############################################################################
@@ -60,27 +72,29 @@ endef
 misra_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_dir)/rules.txt
 cppcheck_misra_addon:=$(misra_dir)/misra.json
-cppcheck_misra_flags:= --quiet --suppress=all --error-exitcode=1 --addon=$(cppcheck_misra_addon) $(CPPFLAGS)
+
+cppcheck_misra_flags:= --quiet --suppress=all --error-exitcode=1 \
+	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) $(CPPFLAGS)
 zephyr_coding_guidelines:=https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/doc/contribute/coding_guidelines/index.rst
 
 ifeq ($(MISRA_C2012_GUIDELINES),)
 $(misra_rules):
 	@echo "Appendix A Summary of guidelines" > $@
-	-@wget -q -O - $(zephyr_coding_guidelines) | grep "\* -  Rule" -A 2 | sed -n '2~2!s/\(.\{9\}\)//p' >> $@
+	-@wget -q -O - $(zephyr_coding_guidelines) | \
+		grep "\* -  Rule" -A 2 | sed -n '2~2!s/\(.\{9\}\)//p' >> $@
 else
 $(misra_rules):
 	@pdftotext $(MISRA_C2012_GUIDELINES) $@
 endif
 
 define misra
-misra-check: $(misra_rules)
+misra-check: $(misra_rules) $(cppcheck_type_cfg)
 	@$(CPPCHECK) $(cppcheck_misra_flags) $1
 
 misra-clean:
 	-rm -f $(misra_rules)
-	-find . -name "*.dump" | xargs rm -f
 
-clean: misra-clean
+clean: misra-clean cppcheck-clean
 
 .PHONY: misra-check misra-clean
 non_build_targets+=misra-check misra-clean

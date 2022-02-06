@@ -1,1 +1,2 @@
 misra/rules.txt
+.cppcheck-types.cfg

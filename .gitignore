@@ -1,2 +1,4 @@
 misra/rules.txt
+misra/.cppcheck-misra-deviations
+misra/.cppcheck-misra-suppressions
 .cppcheck-types.cfg

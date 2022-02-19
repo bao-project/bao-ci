@@ -71,7 +71,15 @@ endef
 
 misra_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_dir)/rules.txt
-cppcheck_misra_addon:=$(misra_dir)/misra.json
+
+define cppcheck_misra_addon
+"{\
+    \"script\": \"misra\",\
+    \"args\": [\
+        \"--rule-texts=ci/misra/rules.txt\"\
+    ]\
+}"
+endef
 
 cppcheck_misra_flags:= --quiet --suppress=all --error-exitcode=1 \
 	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) $(CPPFLAGS)

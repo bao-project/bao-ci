@@ -1,0 +1,391 @@
+unmatchedSuppression
+missingIncludeSystem
+unusedFunction
+# This file lists all the cppcheck checks which do not address the misra rules 
+# for which there are no explicit checks on the misra add-on. It does so by 
+# commenting out those that do, according to the following table:
+#+--------------+--------------------------------------------------------------+
+#|  Misra rule  |                    Cppcheck checks                           |
+#+--------------+--------------------------------------------------------------+
+#|          1.3 | multiple unspecified behaviour errors                        |
+#|          2.1 | unreachableCode,duplicateBreak,multiCondition,               |
+#|              | knownConditionTrueFalse                                      |
+#|          2.2 | redundantCondition,redundantAssignment,                      |
+#|              | redundantAssignInSwitch,unreadVariable                       |
+#|          2.6 | unusedLabel                                                  |
+#|          5.3 | shadowVariable                                               |
+#|          8.3 | funcArgNamesDifferent                                        |
+#|         8.13 | constPointer,constParameter                                  |
+#|          9.1 | uninitvar                                                    |
+#|         13.2 | unknownEvaluationOrder                                       |
+#|         13.6 | sizeofCalculation                                            |
+#|         14.3 | duplicateExpression,comparisonFunctionIsAlwaysTrueOrFalse,   |
+#|              | knownConditionTrueFalse,compareValueOutOfTypeRangeError      |
+#|         17.4 | missingReturn                                                |
+#|         17.5 | argumentSize                                                 |
+#|         18.1 | arrayIndexOutOfBounds,pointerOutOfBounds                     |
+#|         18.2 | comparePointers                                              |
+#|         18.3 | comparePointers                                              |
+#|         18.6 | danglingLifetime                                             |
+#|         19.1 | overlappingWriteUnion overlappingWriteFunction               |
+#|         20.6 | preprocessorErrorDirective                                   |
+#|        21.13 | invalidFunctionArg                                           |
+#|        21.17 | bufferAccessOutOfBounds                                      |
+#|        21.18 | bufferAccessOutOfBounds                                      |
+#|         22.1 | memleak,resourceLeak,memleakOnRealloc,leakReturnValNotUsed,  |
+#|              | leakNoVarFunctionCall                                        |
+#|         22.2 | autovarInvalidDeallocation                                   |
+#|         22.3 | incompatibleFileOpen                                         |
+#|         22.4 | writeReadOnlyFile                                            |
+#|         22.6 | useClosedFile                                                |
+#+--------------+--------------------------------------------------------------+
+# Note that the list below may be incomplete. If a Cppcheck check if found that
+# does not address any misra rule, it should be added to it. Also it should be
+# updated whenever the cppcheck version is upgraded.
+accessForwarded
+accessMoved
+allocaCalled
+#argumentSize # rule 17.5
+arithOperationsOnVoidPointer
+#arrayIndexOutOfBounds # rule 1.3, 18.1
+#arrayIndexOutOfBoundsCond # rule 1.3, 18.1
+arrayIndexThenCheck
+assertWithSideEffect
+assignBoolToFloat
+#assignBoolToPointer # rule 1.3
+assignIfError
+AssignmentAddressToInteger
+assignmentInAssert
+AssignmentIntegerToAddress
+#autoVariables # rule 1.3
+#autovarInvalidDeallocation # rule 22.2
+badBitmaskCheck
+bailoutUninitVar
+bitwiseOnBoolean
+#boostForeachError # rule 1.3
+#bufferAccessOutOfBounds # rule 1.3, 21.17, 21.18
+bughuntingArrayIndexNegative
+bughuntingArrayIndexOutOfBounds
+bughuntingAssign
+bughuntingBufferOverflow
+bughuntingDivByZero
+bughuntingDivByZeroFloat
+bughuntingIntegerOverflow
+bughuntingInvalidArgValue
+bughuntingUninit
+bughuntingUninitArg
+bughuntingUninitNonConstArg
+bughuntingUninitStructMember
+Called
+CastAddressToIntegerAtReturn
+CastIntegerToAddressAtReturn
+catchExceptionByValue
+charArrayIndex
+charBitOp
+charLiteralWithCharPtrCompare
+checkLibraryCheckType
+checkLibraryFunction
+checkLibraryNoReturn
+checkLibraryUseIgnore
+clarifyCalculation
+clarifyCondition
+clarifyStatement
+class_X_Y
+commaSeparatedReturn
+compareBoolExpressionWithInt
+#comparePointers # rule 1.3, 18.2, 18.3
+comparisonError
+#comparisonFunctionIsAlwaysTrueOrFalse #rule 14.3
+comparisonOfBoolWithBoolError
+comparisonOfBoolWithInt
+comparisonOfBoolWithInvalidComparator
+comparisonOfFuncReturningBoolError
+comparisonOfTwoFuncsReturningBoolError
+#complexPatternError # rule 1.3
+conditionAlwaysTrueFalse
+constStatement
+#constParameter # rule 8.13
+#constParameterCallback # rule 8.13
+#constPointer # rule 8.13
+#constVariable # rule 8.13
+#constVariableCallback # rule 8.13
+containerOutOfBounds
+containerOutOfBoundsIndexExpression
+copyCtorAndEqOperator
+copyCtorNoAllocation
+copyCtorPointerCopying
+#coutCerrMisusage # rule 1.3
+cstyleCast
+DacaWrongData
+dacaWrongSplitTemplateRightAngleBrackets
+#dangerousUsageStrtol # rule 1.3
+#danglingLifetime # rule 1.3, 18.6
+#danglingReference # rule 1.3
+#danglingTemporaryLifetime # rule 1.3
+#danglingTempReference # rule 1.3
+#deallocret # rule 1.3
+#derefInvalidIterator # rule 1.3
+#derefInvalidIteratorRedundantCheck # rule 1.3
+destructor
+divideSizeof
+#doubleFree # rule 1.3
+duplicateAssignExpression
+duplicateBranch
+#duplicateBreak # rule 2.1
+duplicateCondition
+duplicateConditionalAssign
+#duplicateExpression # rule 14.3
+#duplicateExpressionTernary # rule 14.3
+duplicateIf
+duplicateValueTernary
+duplInheritedMember
+#eraseDereference # rule 1.3
+exceptDeallocThrow
+exceptRethrowCopy
+exceptThrowInDestructor
+extraWhitespaceError
+fflushOnInputStream
+floatConversionOverflow
+# funcArgNamesDifferent # rule 8.3
+funcArgOrderDifferent
+functionConst
+functionStatic
+globalLockGuard
+identicalConditionAfterEarlyExit
+identicalInnerCondition
+ignoredReturnErrorCode
+ignoredReturnValue
+incrementboolean
+#incompatibleFileOpen # rule 22.3
+incompleteArrayFill
+incorrectLogicOperator
+incorrectCharBooleanError
+incorrectStringBooleanError
+incorrectStringCompare
+initializerList
+integerOverflow
+integerOverflowCond
+safeIntegerOverflow
+#internalStlUsage # rule 1.3
+#invalidContainer # rule 1.3
+#invalidContainerLoop # rule 1.3
+#invalidContainerReference # rule 1.3
+#invalidFree # rule 1.3
+#invalidFunctionArg # rule 21.3
+#invalidFunctionArgBool # rule 1.3, 21.3
+#invalidFunctionArgStr # rule 1.3, 21.3
+invalidLengthModifierError
+#invalidLifetime # rule 1.3
+invalidPointerCast
+invalidPrintfArgType_float
+invalidPrintfArgType_n
+invalidPrintfArgType_p
+invalidPrintfArgType_s
+invalidPrintfArgType_sint
+invalidPrintfArgType_uint
+invalidscanf
+invalidScanfArgType_float
+invalidScanfArgType_int
+invalidScanfArgType_s
+#invalidScanfFormatWidth # rule 1.3
+#invalidScanfFormatWidth_smaller # rule 1.3
+invalidTestForOverflow
+IOWithoutPositioning
+knownArgument
+knownArgumentHiddenVariableExpression
+#knownConditionTrueFalse # rules 2.1, 14.3
+knownEmptyContainer
+#leakNoVarFunctionCall # rule 1.3, 22.1
+#leakReturnValNotUsed # rule 1.3, 22.1
+leakUnsafeArgAlloc
+literalWithCharPtrCompare
+localMutex
+macroWithSemicolon
+#mallocOnClassError # rule 1.3
+mallocOnClassWarning
+#memsetClass # rule 1.3
+#memsetClassFloat # rule 1.3
+#memsetClassReference # rule 1.3
+memsetFloat
+#memleak # rule 22.1
+#memleakOnRealloc # rule 22.1
+memsetValueOutOfRange
+memsetZeroBytes
+mismatchingBitAnd
+mismatchingContainerExpression
+mismatchingContainerIterator
+mismatchingContainers
+missingOverride
+#missingPercentCharacter # rule 1.3
+#missingReturn # rule 1.3, 17.4
+moduloAlwaysTrueFalse
+moduloofone
+#multiComparePatternError # rule 1.3
+#multiCondition # rule 2.1
+multiplySizeof
+nanInArithmeticExpression
+#negativeContainerIndex # rule 1.3
+#negativeIndex # rule 1.3
+noConstructor
+noCopyConstructor
+noDestructor
+noExplicitConstructor
+nonStandardCharLiteral
+noOperatorEq
+#nullPointer # rule 1.3
+#nullPointerArithmetic # rule 1.3
+#nullPointerArithmeticRedundantCheck # rule 1.3
+#nullPointerDefaultArg # rule 1.3
+#nullPointerRedundantCheck # rule 1.3
+objectIndex
+#operatorEqMissingReturnStatement # rule 1.3
+operatorEqRetRefThis
+operatorEqShouldBeLeftUnimplemented
+operatorEqToSelf
+operatorEqVarError
+oppositeExpression
+oppositeInnerCondition
+#orInComplexPattern # rule 1.3
+overlappingStrcmp
+#overlappingWriteFunction # rule 1.3, 19.1
+#overlappingWriteUnion # rule 1.3, 19.1
+passedByValue
+pointerAdditionResultNotNull
+pointerArithBool
+pointerLessThanZero
+pointerOutOfBounds
+pointerOutOfBoundsCond
+pointerPositive
+pointerSize
+#preprocessorErrorDirective # rule 20.6
+prohibitedCalled
+postfixOperator
+publicAllocationError
+pureVirtualCall
+#raceAfterInterlockedDecrement # rule 1.3
+#reademptycontainer # rule 1.3
+readWriteOnlyFile
+#redundantAssignInSwitch # rule 2.2
+#redundantAssignment # rule 2.2
+redundantBitwiseOperationInSwitch
+#redundantCondition # rule 2.2
+redundantCopy
+redundantCopyInSwitch
+redundantCopyLocalConst
+redundantIfRemove
+redundantInitialization
+redundantNextPrevious
+redundantPointerOp
+redundantTokCheck
+#resourceLeak # rule 22.1
+#rethrowNoCurrentException # rule 1.3
+#returnAddressOfAutoVariable # rule 1.3
+#returnAddressOfFunctionParameter # rule 1.3
+#returnDanglingLifetime # rule 1.3
+#returnLocalVariable # rule 1.3
+returnNonBoolInBooleanFunction
+#returnReference # rule 1.3
+returnStdMoveLocal
+#returnTempReference # rule 1.3
+sameIteratorExpression
+seekOnAppendedFile
+selfAssignment
+#selfInitialization # rule 1.3
+#shiftNegative # rule 1.3
+#shiftNegativeLHS # rule 1.3
+shiftTooManyBits
+shiftTooManyBitsSigned
+#shadowArgument # rule 5.3
+#shadowFunction # rule 5.3
+#shadowVariable # rule 5.3
+signConversion
+signConversionCond
+safeSignConversion
+signedCharArrayIndex
+simplePatternError
+simplifyTypedef
+simplifyUsingUnmatchedBodyEnd
+#sizeofCalculation # rule 13.6
+sizeofDereferencedVoidPointer
+sizeofDivisionMemfunc
+sizeofFunctionCall
+sizeofsizeof
+sizeofVoid
+sizeofwithnumericparameter
+sizeofwithsilentarraypointer
+#sprintfOverlappingData # rule 1.3
+staticStringCompare
+#stlBoundaries # rule 1.3
+#stlcstr # rule 1.3
+#stlcstrParam # rule 1.3
+#stlcstrReturn # rule 1.3
+#stlcstrthrow # rule 1.3
+stlFindInsert
+stlIfFind
+stlIfStrFind
+StlMissingComparison
+#stlOutOfBounds # rule 1.3
+stlSize
+stringCompare
+#stringLiteralWrite # rule 1.3
+#strPlusChar # rule 1.3
+suspiciousCase
+suspiciousSemicolon
+switchCaseFallThrough
+terminateStrncpy
+thisSubtraction
+thisUseAfterFree
+#throwInNoexceptFunction # rule 1.3
+truncLongCastAssignment
+truncLongCastReturn
+#udivError # rule 1.3
+unassignedVariable
+unhandledExceptionSpecification
+#uninitdata # rule 1.3
+#uninitstring # rule 1.3
+uninitStructMember
+#uninitvar # rule 1.3, 9.1
+#unknownEvaluationOrder # rule 1.3, 13.2
+#unknownPattern # rule 1.3
+unknownSignCharArrayIndex
+unpreciseMathCall
+#unreachableCode # rule 2.1
+#unreadVariable # rule 2.2
+unsafeClassCanLeak
+unsafeClassRefMember
+unsignedLessThanZero
+unsignedPositive
+unusedAllocatedMemory
+#unusedLabel # rule 2.6
+#unusedLabelSwitch # rule 2.6
+#unusedLabelConfiguration # rule 2.6
+unusedPrivateFunction
+unusedScopedObject
+unusedStructMember
+unusedVariable
+#useClosedFile # rule 22.6
+useInitializationList
+uselessAssignmentArg
+uselessAssignmentPtrArg
+uselessCallsCompare
+uselessCallsEmpty
+uselessCallsRemove
+uselessCallsSubstr
+uselessCallsSwap
+useStlAlgorithm
+va_end_missing
+va_list_usedBeforeStarted
+varFuncNullUB
+variableScope
+va_start_referencePassed
+va_start_subsequentCalls
+va_start_wrongParameter
+virtualCallInConstructor
+#virtualDestructor # rule 1.3
+#writeReadOnlyFile # rule 22.4
+#wrongmathcall # rule 1.3
+wrongPipeParameterSize
+wrongPrintfScanfArgNum
+wrongPrintfScanfParameterPositionError
+#zerodiv # rule 1.3
+#zerodivcond # rule 1.3

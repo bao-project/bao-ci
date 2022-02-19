@@ -71,6 +71,7 @@ endef
 
 misra_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_dir)/rules.txt
+misra_cppcheck_supressions:=$(misra_dir)/.cppcheck-misra-unused-checks
 
 define cppcheck_misra_addon
 "{\
@@ -81,8 +82,9 @@ define cppcheck_misra_addon
 }"
 endef
 
-cppcheck_misra_flags:= --quiet --suppress=all --error-exitcode=1 \
-	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) $(CPPFLAGS)
+cppcheck_misra_flags:= --quiet --enable=all --error-exitcode=1 \
+	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) $(CPPFLAGS) \
+	--suppressions-list=$(misra_cppcheck_supressions)
 zephyr_coding_guidelines:=https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/doc/contribute/coding_guidelines/index.rst
 
 ifeq ($(MISRA_C2012_GUIDELINES),)

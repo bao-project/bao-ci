@@ -15,7 +15,7 @@ AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Always
-AllowShortCaseLabelsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
@@ -68,7 +68,7 @@ PenaltyBreakFirstLessLess: 10
 PenaltyBreakString: 10
 PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 100
-PenaltyReturnTypeOnItsOwnLine: 1
+PenaltyReturnTypeOnItsOwnLine: 100
 PointerAlignment: Left
 ReflowComments:  true
 SortIncludes: false

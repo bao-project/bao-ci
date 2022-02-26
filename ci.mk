@@ -130,3 +130,9 @@ endef
 #############################################################################
 
 ci-rule=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
+
+.PHONY: build
+build:
+
+.PHONY: base-ci
+base-ci: build cppcheck tidy misra-check

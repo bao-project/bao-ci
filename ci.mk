@@ -69,11 +69,16 @@ endef
 
 #############################################################################
 
-misra_dir:=$(ci_dir)/misra
-misra_rules:=$(misra_dir)/rules.txt
-misra_cppcheck_supressions:=$(misra_dir)/.cppcheck-misra-unused-checks
-misra_deviation_suppressions:=$(misra_dir)/.cppcheck-misra-deviations
-misra_suppresions:=$(misra_dir)/.cppcheck-misra-suppressions
+misra_ci_dir:=$(ci_dir)/misra
+misra_rules:=$(misra_ci_dir)/rules.txt
+misra_cppcheck_supressions:=$(misra_ci_dir)/.cppcheck-misra-unused-checks
+misra_deviation_suppressions:=$(misra_ci_dir)/.cppcheck-misra-deviations
+misra_deviation_suppressions_script:=$(misra_ci_dir)/deviation-suppression.py
+misra_suppresions:=$(misra_ci_dir)/.cppcheck-misra-suppressions
+
+misra_dir:=$(root_dir)/misra
+misra_deviation_records:=$(misra_dir)/deviations/
+misra_deviation_permits:=$(misra_dir)/permits/
 
 define cppcheck_misra_addon
 "{\
@@ -107,6 +112,8 @@ $(misra_deviation_suppressions): $1 $2
 $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressions)
 	@cat $$^ > $$@
 
+misra-dev-format-check: $(misra_deviation_records) $(misra_deviation_permits)
+	@yamllint --strict $$^
 
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
 	@$(CPPCHECK) $(cppcheck_misra_flags) $1
@@ -116,7 +123,7 @@ misra-clean:
 
 clean: misra-clean cppcheck-clean
 
-.PHONY: misra-check misra-clean
+.PHONY: misra-check misra-clean misra-dev-check
 non_build_targets+=misra-check misra-clean
 endef
 

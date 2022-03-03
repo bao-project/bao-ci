@@ -1,0 +1,30 @@
+# MISRA deviation permit template
+---
+
+# The tag should always be the same name of the file, start with MDP followed
+# by the permit ID.
+tag: MDP1
+
+# List the guidelines that are being violated
+guidelines:
+  - "R2.5"
+
+# Summarize the use case(s) under which the permit may be used to support
+# a violation.
+use_case: >
+
+# List one or more of the allowed justification items.
+reasons:
+  - Code quality (usability). ...
+  - .... ...
+
+# Detail the use cases and reasons list above.
+background: >
+
+# Explicitly list the requirements a violation/deviation must fulfill to
+# properly assess and manage all the possible risks raised by the violation
+# that are described in the guideline's rationale. If multiple guidelines are
+# encompassed by the permit, specify which requirements need to be meet when
+# violation each guideline.
+requirements:
+  - ...

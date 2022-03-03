@@ -1,0 +1,37 @@
+# MISRA deviation record template
+
+---
+
+# The tag should always be the same name of the file, start with MDR followed
+# by the record ID.
+tag: MDR1
+
+# Optionally, list a deviation permits used as base fot the deviation.
+permits:
+  - "MDP1"
+  - "MPD2"
+
+# List the guidelines that are being violated.
+guidelines:
+  - "R2.5"
+  - "D4.4"
+
+# Summarize the violation and its context. Optional if a permit is selected.
+use_case: >
+
+# List one or more of the allowed justification items. Optional if a permit is
+# selected.
+reasons:
+  - Code quality (usability). ...
+  - .... ...
+
+# Detail the use cases and reasons list above.
+description: >
+  ...
+
+# Assess how the risks described the guideline's rationale affect this violation
+# and describe how they are managed or mitigated in this violation. In case a
+# permit is selected, detail point by point how the deviation fulfils the
+# permit's requirements.
+risk: >
+  ...

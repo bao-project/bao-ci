@@ -9,10 +9,11 @@ def eprint(*args, **kwargs):
 
 MISRA_DEV_REGEX="MISRA(DEV(FILE|END|START)?|FP):(,?R([\.\d]*))+:(,?(MDP|MDR)(\d*))*"
 
-def print_deviation(file_name, rule, line):
+def print_deviation(file_name, rule, line=None, is_range=False):
     if line is not None:
         print(f'misra-c2012-{rule}:{file_name}:{line}')
-        print(f'unmatchedSuppression:{file_name}:{line}')
+        if is_range:
+            print(f'unmatchedSuppression:{file_name}:{line}')
     else:
         print(f'misra-c2012-{rule}:{file_name}')
 
@@ -42,10 +43,10 @@ def process_deviations(file_name):
                 sys.exit(-1)
             for rule in rule_array:
                 for line in range(startline, lineno):
-                    print_deviation(file_name, rule, line)
+                    print_deviation(file_name, rule, line, True)
         elif header == 'MISRADEVFILE':
             for rule in rule_array:
-                print_deviation(file_name, rule, None)
+                print_deviation(file_name, rule)
         else:
             for rule in rule_array:
                 print_deviation(file_name, rule, lineno+1)

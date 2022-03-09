@@ -1,4 +1,4 @@
-ci_dir:=$(realpath ci)
+ci_dir?=$(realpath ci)
 
 CPPCHECK?=cppcheck
 CLANG_VERSION?=12

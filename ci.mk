@@ -9,6 +9,27 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 
 #############################################################################
 
+pylintrc:=$(ci_dir)/.pylintrc
+
+pylint: $(pylintrc)
+	@pylint $(_python_scritps)
+
+define pylint
+_python_scritps+=$1
+endef
+
+#############################################################################
+
+yamllint:
+	@yamllint --strict $(_yaml_files)
+.PHONY:yamllint
+
+define yamllint
+_yaml_files+=$1
+endef
+
+#############################################################################
+
 clang_format_flags:=--style=file
 format_file:=$(root_dir)/.clang-format
 original_format_file:=$(ci_dir)/.clang-format
@@ -119,14 +140,13 @@ $(misra_deviation_suppressions): $$(_misra_c_files) $$(_misra_h_files)
 $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressions)
 	@cat $^ > $@
 
-misra-dev-format-check: $(misra_deviation_records) $(misra_deviation_permits)
-	@yamllint --strict $$^
-
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
 	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_c_files)
 
 misra-clean:
 	-rm -f $(misra_rules) $(misra_suppresions) $(misra_deviation_suppressions)
+
+$(call ci, yamllint, $(wildcard $(misra_deviation_records) $(misra_deviation_permits)))
 
 clean: misra-clean cppcheck-clean
 

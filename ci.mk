@@ -5,21 +5,22 @@ CLANG_VERSION?=12
 CLANG-FORMAT?=clang-format-$(CLANG_VERSION)
 CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 
+.SECONDEXPANSION:
+
 #############################################################################
 
 clang_format_flags:=--style=file
 format_file:=$(root_dir)/.clang-format
 original_format_file:=$(ci_dir)/.clang-format
 
-define format
 $(format_file): $(original_format_file)
-	@cp $$< $$@
+	@cp $< $@
 
 format: $(format_file)
-	@$(CLANG-FORMAT) $(clang_format_flags) -i $1
+	@$(CLANG-FORMAT) $(clang_format_flags) -i $(_format_files)
 
 format-check: $(format_file)
-	@diff <(cat $1) <($(CLANG-FORMAT) $(clang_format_flags) $1)
+	@diff <(cat $(_format_files)) <($(CLANG-FORMAT) $(clang_format_flags) $(_format_files))
 
 format-clean:
 	-@rm -f $(format_file)
@@ -28,17 +29,22 @@ clean: format-clean
 
 .PHONY: format format-check format-clean
 non_build_targets+=format format-check format-clean
+
+define format
+_format_files+=$1
 endef
 
 #############################################################################
 
-define tidy
 tidy:
-	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $1 -- \
+	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $(_tidy_files) -- \
 		--target=$(clang-arch) $(CPPFLAGS) 2> /dev/null
 
 .PHONY: tidy
 non_build_targets+=tidy
+
+define tidy
+_tidy_files+=$1
 endef
 
 #############################################################################
@@ -54,9 +60,8 @@ cppcheck_flags:= --quiet --enable=all --error-exitcode=1 \
 	--library=$(cppcheck_type_cfg) \
 	--suppressions-list=$(cppcheck_suppressions) $(CPPFLAGS)
 
-define cppcheck
 cppcheck: $(cppcheck_type_cfg)
-	@$(CPPCHECK) $(cppcheck_flags) $1
+	@$(CPPCHECK) $(cppcheck_flags) $(_cppcheck_files)
 
 cppcheck-clean:
 	@rm -f $(cppcheck_type_cfg)
@@ -65,6 +70,9 @@ clean: cppcheck-clean
 
 .PHONY: cppcheck
 non_build_targets+=cppcheck cppcheck-clean
+
+define cppcheck
+_cppcheck_files+=$1
 endef
 
 #############################################################################
@@ -105,18 +113,17 @@ $(misra_rules):
 	@pdftotext $(MISRA_C2012_GUIDELINES) $@
 endif
 
-define misra
-$(misra_deviation_suppressions): $1 $2
-	@$(misra_deviation_suppressions_script) $$^ > $$@
+$(misra_deviation_suppressions): $$(_misra_c_files) $$(_misra_h_files)
+	@$(misra_deviation_suppressions_script) $^ > $@
 
 $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressions)
-	@cat $$^ > $$@
+	@cat $^ > $@
 
 misra-dev-format-check: $(misra_deviation_records) $(misra_deviation_permits)
 	@yamllint --strict $$^
 
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
-	@$(CPPCHECK) $(cppcheck_misra_flags) $1
+	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_c_files)
 
 misra-clean:
 	-rm -f $(misra_rules) $(misra_suppresions) $(misra_deviation_suppressions)
@@ -125,11 +132,15 @@ clean: misra-clean cppcheck-clean
 
 .PHONY: misra-check misra-clean misra-dev-check
 non_build_targets+=misra-check misra-clean
+
+define misra
+_misra_c_files+=$1
+_misra_h_files+=$2
 endef
 
 #############################################################################
 
-ci-rule=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
+ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
 
 .PHONY: build
 build:

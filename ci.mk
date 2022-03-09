@@ -102,7 +102,7 @@ misra_ci_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_ci_dir)/rules.txt
 misra_cppcheck_supressions:=$(misra_ci_dir)/.cppcheck-misra-unused-checks
 misra_deviation_suppressions:=$(misra_ci_dir)/.cppcheck-misra-deviations
-misra_deviation_suppressions_script:=$(misra_ci_dir)/deviation-suppression.py
+misra_deviation_suppressions_script:=$(misra_ci_dir)/deviation_suppression.py
 misra_suppresions:=$(misra_ci_dir)/.cppcheck-misra-suppressions
 
 misra_dir:=$(root_dir)/misra

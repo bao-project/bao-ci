@@ -1,4 +1,5 @@
-ci_dir?=$(realpath ci)
+ci_dir?=$(realpath $(root_dir)/ci)
+cur_dir:=$(realpath .)
 
 CPPCHECK?=cppcheck
 CLANG_VERSION?=12
@@ -8,6 +9,12 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 .SECONDEXPANSION:
 
 #############################################################################
+
+# Python linting
+# Checks if the provided python scrpits for syntax and format:
+#    make pylint
+# @param space-separated list of python files
+# @example $(call ci, pylint, file1.py file2.py)
 
 pylintrc:=$(ci_dir)/.pylintrc
 
@@ -20,6 +27,12 @@ endef
 
 #############################################################################
 
+# YAML linting
+# Checks if the provided yaml files for syntax and format:
+#    make yamllint
+# @param space-separated list of yaml files
+# @example $(call ci, yamllint, file1.yaml file2.yml)
+
 yamllint:
 	@yamllint --strict $(_yaml_files)
 .PHONY:yamllint
@@ -30,8 +43,15 @@ endef
 
 #############################################################################
 
+# C Formatting
+# Provides two make targets:
+#    make format-check # checks if the provided C files are formated correctly
+#    make format # formats the provided C files 
+# @param space-separated list of C source or header files
+# @example $(call ci, format, file1.c fil2.c file3.h)
+
 clang_format_flags:=--style=file
-format_file:=$(root_dir)/.clang-format
+format_file:=$(cur_dir)/.clang-format
 original_format_file:=$(ci_dir)/.clang-format
 
 $(format_file): $(original_format_file)
@@ -57,6 +77,14 @@ endef
 
 #############################################################################
 
+# Clang-tidy linter
+# To run the tidy linter:
+#    make tidy
+# @pre the make variable `clang-arch` should be defined if using the tidy rule
+#    with a valid target fot the clang compiler
+# @param a single space-separated list of C files (header or source)
+# @example $(call ci, tidy, file1.c file2.c file3.h)
+
 tidy:
 	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $(_tidy_files) -- \
 		--target=$(clang-arch) $(CPPFLAGS) 2> /dev/null
@@ -69,6 +97,12 @@ _tidy_files+=$1
 endef
 
 #############################################################################
+
+# Cppcheck static-analyzer
+# Run it by:
+#    make cppcheck
+# @param a single space-separated list of C files (header or source)
+# @example $(call ci, cppcheck, file1.c file2.c file3.h)
 
 cppcheck_type_cfg:=$(ci_dir)/.cppcheck-types.cfg
 cppcheck_type_cfg_src:=$(ci_dir)/cppcheck-types.c
@@ -97,6 +131,15 @@ _cppcheck_files+=$1
 endef
 
 #############################################################################
+
+# MISRA Checker
+# Use this rule to run the Cppcheck misra add-on checker:
+#    make misra-check
+# @pre MISRA checker rules assume your repository as a misra folder in the
+#    top-level directories with the records and permits subdirectories (see doc).
+# @arg space separated list of C source files
+# @arg space separated list of C header files
+# @example $(call ci, misra, file1.c file2.c, file3.h)
 
 misra_ci_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_ci_dir)/rules.txt
@@ -166,4 +209,4 @@ ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
 build:
 
 .PHONY: base-ci
-base-ci: build cppcheck tidy misra-check
+base-ci: format build cppcheck tidy misra-check

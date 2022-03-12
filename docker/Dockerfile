@@ -1,22 +1,28 @@
 # base image
 FROM ubuntu:20.04
+ARG DEBIAN_FRONTEND=noninteractive
 
 # docker image arguments
-ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
+ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf.tar.xz
 ARG RISCV_TOOLCHAIN_LINK=https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
 ARG CLANG_VERSION=12
-ARG CPPCHECK_LINK=https://github.com/danmar/cppcheck/archive/refs/tags/2.6.tar.gz
+# use this repo temporarily while the patches for misra fps are not in a new official version
+ARG CPPCHECK_REPO=https://github.com/josecm/cppcheck.git
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
         git \
         curl \
+        wget \
         xz-utils \
         build-essential \
         gcc-multilib \
+        python3 \
+        yamllint \
+        pylint \
         clang-format-$CLANG_VERSION \
         clang-tidy-$CLANG_VERSION && \
-    mkdir /opt/cppcheck && curl -L $CPPCHECK_LINK | tar xz -C /opt/cppcheck --strip-components=1 && make -C /opt/cppcheck && \
+    mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
     mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1
 

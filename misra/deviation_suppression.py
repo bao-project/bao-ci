@@ -22,8 +22,7 @@ def print_suppression(file_name, rule, line=None, is_range=False):
 
     if line is not None:
         print(f'misra-c2012-{rule}:{file_name}:{line}')
-        if is_range:
-            print(f'unmatchedSuppression:{file_name}:{line}')
+        print(f'unmatchedSuppression:{file_name}:{line}')
     else:
         print(f'misra-c2012-{rule}:{file_name}')
 

@@ -8,6 +8,14 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 
 .SECONDEXPANSION:
 
+# Git Commit message linting
+# Checks if the commit messages follow the conventional commit style from 
+# GITLINT_BASE to the last commit. For example, for checking the last two commits:
+#    make gitlint GITLINT_BASE=HEAD~2
+
+gitlint:
+	@gitlint -C $(ci_dir)/.gitlint --commits $(GITLINT_BASE)..
+
 #############################################################################
 
 # Python linting

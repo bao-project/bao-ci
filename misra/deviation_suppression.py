@@ -16,7 +16,7 @@ def eprint(*args, **kwargs):
 
 MISRA_DEV_REGEX=r"MISRA(DEV(FILE|END|START)?|FP):(,?R([\.\d]*))+:(,?(MDP|MDR)(\d*))*"
 
-def print_suppression(file_name, rule, line=None, is_range=False):
+def print_suppression(file_name, rule, line=None):
 
     """Print the suppression for the rule in cppcheck format."""
 
@@ -62,7 +62,7 @@ def process_deviations(file_name):
                 sys.exit(-1)
             for rule in rule_array:
                 for loc in range(startline, lineno):
-                    print_suppression(file_name, rule, loc, True)
+                    print_suppression(file_name, rule, loc)
         elif header == 'MISRADEVFILE':
             for rule in rule_array:
                 print_suppression(file_name, rule)

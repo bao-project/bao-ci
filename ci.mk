@@ -109,8 +109,10 @@ endef
 # Clang-tidy linter
 # To run the tidy linter:
 #    make tidy
-# @pre the make variable `clang-arch` should be defined if using the tidy rule
+# @pre the make variable `clang-arch` must be defined if using the tidy rule
 #    with a valid target fot the clang compiler
+# @pre the make variable `CPPFLAGS` must be defined with all pre-processor
+# options, specially the include directory -paths (e.g -I/my/include/dir/inc)
 # @param a single space-separated list of C files (header or source)
 # @example $(call ci, tidy, file1.c file2.c file3.h)
 

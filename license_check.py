@@ -1,7 +1,7 @@
 #!/bin/python3
 
 """
-Check for SPDX license headers in source files
+Check for SPDX license headers and copyright notice in source files
 """
 
 import sys
@@ -16,12 +16,31 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 SPDX_PARSER = None
-# TODO: improve regex to support multiple licenses (AND, OR) and execeptions (WITH)
-SPDX_REGEX = r'SPDX-License-Identifier: \(?(?P<license_expr>\S*)\)?'
+
+def check_copyright(filename, copyright_notice):
+
+    """Check if file `filename` contains a `copyright` notice string"""
+
+    try:
+        file = open(filename)
+    except FileNotFoundError:
+        eprint(f'Can\'t open file \'{filename}\'')
+        return False
+
+    for line in file:
+        if copyright_notice in line:
+            return True
+
+    eprint(f'No copyright notice found in {filename}')
+    return False
+
 
 def check_license(filename, spdx_expr):
 
     """Check if 'filename' has a SPDX identifier complying with 'spdx_exr'"""
+
+    # TODO: improve regex to support multiple licenses (AND, OR) and execeptions (WITH)
+    spdx_regex = r'SPDX-License-Identifier: \(?(?P<license_expr>\S*)\)?'
 
     try:
         file = open(filename)
@@ -38,7 +57,7 @@ def check_license(filename, spdx_expr):
         if  line.startswith('#!'):
             continue
 
-        match = re.search(SPDX_REGEX, line)
+        match = re.search(spdx_regex, line)
         if match is not None:
             license_expr_str = match.groupdict()['license_expr']
             spdx_parser = license_expression.get_spdx_licensing()
@@ -71,6 +90,8 @@ def main():
     parser = argparse.ArgumentParser(description='Check for SPDX ID in source files')
     parser.add_argument('-l', '--license', metavar='license',
         help='SPDX expression describing allowed licenses')
+    parser.add_argument('-c', '--copyright', metavar='copyright',
+        help='Copyright notice to be checked for')
     parser.add_argument('file', metavar='file', nargs='+',
         help='Source files to be checked for license')
     args = parser.parse_args()
@@ -88,9 +109,15 @@ def main():
         return
     spdx_expr = spdx_parser.parse(spdx_expr)
 
+    copyright_notice = args.copyright
+    if not copyright_notice:
+        copyright_notice = "Copyright (c) Bao Project and Contributors. All rights reserved"
+        eprint(f'No copyright notice supplied. Using {copyright_notice}.')
+
     success = True
     for file in args.file:
         success = check_license(file, spdx_expr) and success
+        success = check_copyright(file, copyright_notice) and success
 
     if not success:
         sys.exit(-1)

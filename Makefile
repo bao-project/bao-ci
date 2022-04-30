@@ -6,7 +6,8 @@ all:
 include ci.mk
 
 python_scripts:= \
-	$(root_dir)/misra/deviation_suppression.py
+	$(root_dir)/misra/deviation_suppression.py \
+	$(root_dir)/license_check.py
 $(call ci, pylint, $(python_scripts))
 
 yaml_files:= \

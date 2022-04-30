@@ -18,6 +18,27 @@ gitlint:
 
 #############################################################################
 
+# License Checking
+# Checks if the provided source file have a SPDX license identifier following
+# the provided SPDX license expriession.
+#    make license-check
+# @param string of SPDX expression of the allowed license for the files defined 
+#     in the second param
+# @param space-separated list of source files (any kind)
+# @example $(call ci, license, "Apache-2.0 OR MIT", file1.c file.rs file.h file.mk)
+
+license_check_script:=$(ci_dir)/license_check.py
+
+license:
+	@$(license_check_script) -l $(spdx_expression) $(lincense_check_files)
+
+define license
+spdx_expression:=$1
+lincense_check_files:=$2
+endef
+
+#############################################################################
+
 # Python linting
 # Checks if the provided python scrpits for syntax and format:
 #    make pylint

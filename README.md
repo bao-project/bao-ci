@@ -1,6 +1,6 @@
 # Bao CI utilities
 
-This repository aims at centralizing the artefacts used for continous
+This repository aims at centralizing the artifacts used for continuous
 integration across all other repositories in the Bao Project. Its main goal is
 to provide a consistent framework for running the code quality checks and tests
 both in a developer's local machine, as well in a remote CI pipeline, in a
@@ -11,11 +11,21 @@ reproducible manner. It provides two main facilities:
 - A [docker container](docker/Dockerfile) definition which provides a
 reproducible enviroment for running the checks.
 
-Besides these two main pilars, the repository contains a number of configuration
+Besides these two main pillars, the repository contains a number of configuration
 and template files used by the tools and CI process in general.
 
 Although we use GitHub Actions for the remote CI pipeline, all workflow steps
 are rab in the docker container by calling the rules defined in makefile.
+
+The following checks are provided:
+
+- gitlint: checks commit messages follow the conventional commit style
+- license: for checking source files contain an SPDX license identifier 
+- pylint: python formatting and linting
+- yamllint: yaml formatting and linting
+- format: C formatting
+- tidy and cppcheck: C static analysis
+- misra: MISRA C checking
 
 ## Setting up CI in a repository
 
@@ -28,7 +38,7 @@ git submodule add git@github.com:bao-project/bao-ci.git ci
 ```
 
 Then you should include *ci.mk* in your projects Makefile, preferably at the
-very end, but it must be after your first rule defition. Before including
+very end, but it must be after your first rule definition. Before including
 *ci.mk* you must define the `root_dir` variable with the of the project
 top-level directory. Assuming the Makefile is located at the project's top-level
 directory:
@@ -72,7 +82,7 @@ You'll get a make target for checking if the formatting is correct and another
 to apply the formatting:
 
 ```
-make format-check # checks if the files are correctly formated
+make format-check # checks if the files are correctly formatted
 make format # formats the files
 ```
 

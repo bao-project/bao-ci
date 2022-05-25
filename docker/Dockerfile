@@ -22,8 +22,12 @@ RUN apt-get update && apt-get install -y \
         yamllint \
         pylint \
         clang-format-$CLANG_VERSION \
-        clang-tidy-$CLANG_VERSION && \
+        clang-tidy-$CLANG_VERSION \
+        nodejs npm && \
     pip3 install gitlint && \
+    pip3 install sphinxcontrib-spelling && \
+    pip3 install doc8 && \
+    npm install -g cspell@latest && \
     mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
     mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1

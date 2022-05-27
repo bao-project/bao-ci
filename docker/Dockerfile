@@ -23,9 +23,14 @@ RUN apt-get update && apt-get install -y \
         pylint \
         clang-format-$CLANG_VERSION \
         clang-tidy-$CLANG_VERSION \
-        nodejs npm && \
+        nodejs \
+        npm \
+        enchant && \
     pip3 install gitlint && \
+    pip3 install pyenchant && \
     pip3 install sphinxcontrib-spelling && \
+    pip3 install sphinx-rtd-theme && \
+    pip3 install sphinx-tabs && \
     pip3 install doc8 && \
     npm install -g cspell@latest && \
     mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \

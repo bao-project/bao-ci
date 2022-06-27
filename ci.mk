@@ -111,20 +111,21 @@ endef
 #    make tidy
 # @pre the make variable `clang-arch` must be defined if using the tidy rule
 #    with a valid target fot the clang compiler
-# @pre the make variable `CPPFLAGS` must be defined with all pre-processor
-# options, specially the include directory -paths (e.g -I/my/include/dir/inc)
-# @param a single space-separated list of C files (header or source)
+# @param1 a single space-separated list of C files (header or source)
+# @param2 a list of pre-processor options, specially the include directory 
+# -paths (e.g -I/my/include/dir/inc)
 # @example $(call ci, tidy, file1.c file2.c file3.h)
 
 tidy:
 	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $(_tidy_files) -- \
-		--target=$(clang-arch) $(CPPFLAGS) 2> /dev/null
+		--target=$(clang-arch) $(_tidy_flags) 2> /dev/null
 
 .PHONY: tidy
 non_build_targets+=tidy
 
 define tidy
 _tidy_files+=$1
+_tidy_flags+=$2
 endef
 
 #############################################################################
@@ -132,7 +133,8 @@ endef
 # Cppcheck static-analyzer
 # Run it by:
 #    make cppcheck
-# @param a single space-separated list of C files (header or source)
+# @param1 a single space-separated list of C files (header or source)
+# @param2 a list of preprocessor flags, including header files root path 
 # @example $(call ci, cppcheck, file1.c file2.c file3.h)
 
 cppcheck_type_cfg:=$(ci_dir)/.cppcheck-types.cfg
@@ -144,7 +146,7 @@ $(cppcheck_type_cfg): $(cppcheck_type_cfg_src)
 cppcheck_suppressions:=$(ci_dir)/.cppcheck-suppress
 cppcheck_flags:= --quiet --enable=all --error-exitcode=1 \
 	--library=$(cppcheck_type_cfg) \
-	--suppressions-list=$(cppcheck_suppressions) $(CPPFLAGS)
+	--suppressions-list=$(cppcheck_suppressions) $(_cppcheck_flags)
 
 cppcheck: $(cppcheck_type_cfg)
 	@$(CPPCHECK) $(cppcheck_flags) $(_cppcheck_files)
@@ -159,6 +161,7 @@ non_build_targets+=cppcheck cppcheck-clean
 
 define cppcheck
 _cppcheck_files+=$1
+_cppcheck_flags+=$2
 endef
 
 #############################################################################
@@ -168,8 +171,10 @@ endef
 #    make misra-check
 # @pre MISRA checker rules assume your repository as a misra folder in the
 #    top-level directories with the records and permits subdirectories (see doc).
-# @arg space separated list of C source files
-# @arg space separated list of C header files
+# @param1 space separated list of C source files
+# @param2 space separated list of C header files
+# @param3 a list of preprocessor flags, including header files root path
+# @param4 explicit space separated list of suppressions
 # @example $(call ci, misra, file1.c file2.c, file3.h)
 
 misra_ci_dir:=$(ci_dir)/misra
@@ -187,16 +192,15 @@ define cppcheck_misra_addon
 "{\
     \"script\": \"misra\",\
     \"args\": [\
-        \"--rule-texts=ci/misra/rules.txt\"\
+        \"--rule-texts=$(root_dir)/ci/misra/rules.txt\"\
     ]\
 }"
 endef
 
 cppcheck_misra_flags:= --quiet --enable=all --error-exitcode=1 \
-	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) $(CPPFLAGS) \
+	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) \
 	--suppressions-list=$(misra_suppresions)
 zephyr_coding_guidelines:=https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/doc/contribute/coding_guidelines/index.rst
-
 
 ifeq ($(MISRA_C2012_GUIDELINES),)
 $(misra_rules):
@@ -215,7 +219,7 @@ $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressio
 	@cat $^ > $@
 
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
-	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_c_files)
+	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_flags) $(_misra_c_files) $(_misra_sup)
 
 misra-clean:
 	-rm -f $(misra_rules) $(misra_suppresions) $(misra_deviation_suppressions)
@@ -230,6 +234,8 @@ non_build_targets+=misra-check misra-clean
 define misra
 _misra_c_files+=$1
 _misra_h_files+=$2
+_misra_flags+=$3
+_misra_sup+=$4
 endef
 
 #############################################################################

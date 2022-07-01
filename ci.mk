@@ -174,7 +174,10 @@ endef
 # @param cfiles space separated list of C source files
 # @param hfiles space separated list of C header files
 # @param paths a list of preprocessor flags, including header files root path
-# @example $(call ci, misra, file1.c file2.c, file3.h, -I/my/include/dir/inc)
+# @param sups explicit space separated list of suppressions
+# @example $(call ci, misra, file1.c file2.c, file3.h, -I/my/include/dir/inc,
+# --suppress=<spec>)
+# @note: check cppcheck help to know more about suppressions use
 
 misra_ci_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_ci_dir)/rules.txt
@@ -218,7 +221,7 @@ $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressio
 	@cat $^ > $@
 
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
-	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_c_files)
+	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_c_files) $(_misra_sup)
 
 misra-clean:
 	-rm -f $(misra_rules) $(misra_suppresions) $(misra_deviation_suppressions)
@@ -234,6 +237,7 @@ define misra
 _misra_c_files+=$1
 _misra_h_files+=$2
 _misra_flags+=$3
+_misra_sup+=$4
 endef
 
 #############################################################################

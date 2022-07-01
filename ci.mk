@@ -112,9 +112,9 @@ endef
 # @pre the make variable `clang-arch` must be defined if using the tidy rule
 #    with a valid target fot the clang compiler
 # @param1 a single space-separated list of C files (header or source)
-# @param2 a list of pre-processor options, specially the include directory 
-# -paths (e.g -I/my/include/dir/inc)
-# @example $(call ci, tidy, file1.c file2.c file3.h)
+# @param2 a list of pre-processor options, specially the include directory
+# paths
+# @example $(call ci, tidy, file1.c file2.c file3.h, -I/my/include/dir/inc)
 
 tidy:
 	@$(CLANG-TIDY) --config-file=$(ci_dir)/.clang-tidy $(_tidy_files) -- \
@@ -134,8 +134,8 @@ endef
 # Run it by:
 #    make cppcheck
 # @param1 a single space-separated list of C files (header or source)
-# @param2 a list of preprocessor flags, including header files root path 
-# @example $(call ci, cppcheck, file1.c file2.c file3.h)
+# @param2 a list of preprocessor flags, including header files root path
+# @example $(call ci, cppcheck, file1.c file2.c file3.h, -I/my/include/dir/inc)
 
 cppcheck_type_cfg:=$(ci_dir)/.cppcheck-types.cfg
 cppcheck_type_cfg_src:=$(ci_dir)/cppcheck-types.c
@@ -174,8 +174,7 @@ endef
 # @param1 space separated list of C source files
 # @param2 space separated list of C header files
 # @param3 a list of preprocessor flags, including header files root path
-# @param4 explicit space separated list of suppressions
-# @example $(call ci, misra, file1.c file2.c, file3.h)
+# @example $(call ci, misra, file1.c file2.c, file3.h, -I/my/include/dir/inc)
 
 misra_ci_dir:=$(ci_dir)/misra
 misra_rules:=$(misra_ci_dir)/rules.txt
@@ -219,7 +218,7 @@ $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressio
 	@cat $^ > $@
 
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
-	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_flags) $(_misra_c_files) $(_misra_sup)
+	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_flags) $(_misra_c_files)
 
 misra-clean:
 	-rm -f $(misra_rules) $(misra_suppresions) $(misra_deviation_suppressions)
@@ -235,7 +234,6 @@ define misra
 _misra_c_files+=$1
 _misra_h_files+=$2
 _misra_flags+=$3
-_misra_sup+=$4
 endef
 
 #############################################################################

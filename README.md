@@ -20,7 +20,6 @@ are rab in the docker container by calling the rules defined in makefile.
 The following checks are provided:
 
 - gitlint: checks commit messages follow the conventional commit style
-- license: for checking source files contain an SPDX license identifier 
 - pylint: python formatting and linting
 - yamllint: yaml formatting and linting
 - format: C formatting
@@ -89,6 +88,17 @@ make format # formats the files
 Check [ci.mk](ci.mk) for more details on the available CI rules, its arguments
 and how to invoke them.
 
+### Global CI rule
+
+By convention, repos using this CI infrastructure should also define a make
+rule such that running `make ci` locally runs all rules necessary for that
+repo, except rules related to the commits themselves such as gitlint.
+For example, for a repo composed of a mix of C an Python sources:
+
+```
+ci: license pylint format-check tidy cppcheck misra
+```
+
 ## Using the Docker Container
 
 We provide a docker container with all the needed tools and dependencies for
@@ -115,7 +125,7 @@ If you prefer, you can build the container image locally by running:
 make -C ci/docker build
 ```
 
-## Setting up GitHub Actions 
+## Setting up GitHub Actions
 
 When setting up GitHub Actions' workflows for you repo, each step should make
 use of the docker container to run the CI rules instantiated in that repo's

@@ -14,3 +14,5 @@ yaml_files:= \
 	$(root_dir)/misra/deviation_record_template.yml \
 	$(root_dir)/misra/deviation_permit_template.yml
 $(call ci, yamllint, $(yaml_files))
+
+ci: license pylint yamllint

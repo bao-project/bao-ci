@@ -16,20 +16,24 @@
 root_dir?=$(realpath ../..)
 
 DOCKER?=$(shell which docker)
-docker_repo:=baoproject
-docker_image:=bao
+docker_repo:=baoproject/bao
 docker_tag:=latest
+docker_image:=$(docker_repo):$(docker_tag)
 
 override MAKEFLAGS:=$(addprefix -,$(MAKEFLAGS)) --no-print-directory
 
 all .DEFAULT:
 	@echo "Launching docker container..."
 	-@$(DOCKER) run --rm -it -u bao -v $(root_dir):$(root_dir) -w $(root_dir) \
-		$(docker_repo)/$(docker_image):$(docker_tag) $(MAKE) $(MAKEFLAGS) $(MAKEOVERRIDES) $@
+		$(docker_image) $(MAKE) $(MAKEFLAGS) $(MAKEOVERRIDES) $@
 	@echo "Leaving and destroying docker container..."
 
 build:
 	@echo "Launching docker container..."
 	@$(DOCKER) build -t $(docker_image) .
 
-.PHONY: all
+push: build
+	@echo "Pushing container image to $(docker_repo)"
+	@$(DOCKER) push $(docker_image)
+
+.PHONY: all build push

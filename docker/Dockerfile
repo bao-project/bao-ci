@@ -7,7 +7,8 @@ ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files
 ARG RISCV_TOOLCHAIN_LINK=https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
 ARG CLANG_VERSION=12
 # use this repo temporarily while the patches for misra fps are not in a new official version
-ARG CPPCHECK_REPO=https://github.com/josecm/cppcheck.git
+ARG CPPCHECK_REPO=https://github.com/danmar/cppcheck.git
+ARG CPPCHECK_VERSION=2.8
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
@@ -34,7 +35,7 @@ RUN apt-get update && apt-get install -y \
     pip3 install sphinx-tabs && \
     pip3 install doc8 && \
     npm install -g cspell@latest && \
-    mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
+    mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
     mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1
 

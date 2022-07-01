@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Bao Project and Contributors. All rights reserved
+
 """
 Generating MISRA checker input files for deviation suppresions.
 """

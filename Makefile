@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Bao Project and Contributors. All rights reserved
+
 root_dir:=$(realpath .)
 ci_dir:=$(root_dir)
 

@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
         npm \
         enchant && \
     pip3 install gitlint && \
+    pip3 install license-expression && \
     pip3 install pyenchant && \
     pip3 install sphinxcontrib-spelling && \
     pip3 install sphinx-rtd-theme && \

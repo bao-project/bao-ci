@@ -22,8 +22,8 @@ gitlint:
 # Checks if the provided source file have a SPDX license identifier following
 # the provided SPDX license expriession.
 #    make license-check
-# @param string of SPDX expression of the allowed license for the files defined 
-#     in the second param
+# @param string of SPDX expression of the allowed license for the files defined
+#    in the second param
 # @param space-separated list of source files (any kind)
 # @example $(call ci, license, "Apache-2.0 OR MIT", file1.c file.rs file.h file.mk)
 
@@ -111,9 +111,9 @@ endef
 #    make tidy
 # @pre the make variable `clang-arch` must be defined if using the tidy rule
 #    with a valid target fot the clang compiler
-# @param1 a single space-separated list of C files (header or source)
-# @param2 a list of pre-processor options, specially the include directory
-# paths
+# @param files a single space-separated list of C files (header or source)
+# @param paths a list of pre-processor options, specially the include
+#    directory paths
 # @example $(call ci, tidy, file1.c file2.c file3.h, -I/my/include/dir/inc)
 
 tidy:
@@ -133,8 +133,8 @@ endef
 # Cppcheck static-analyzer
 # Run it by:
 #    make cppcheck
-# @param1 a single space-separated list of C files (header or source)
-# @param2 a list of preprocessor flags, including header files root path
+# @param files a single space-separated list of C files (header or source)
+# @param headers a list of preprocessor flags, including header files root path
 # @example $(call ci, cppcheck, file1.c file2.c file3.h, -I/my/include/dir/inc)
 
 cppcheck_type_cfg:=$(ci_dir)/.cppcheck-types.cfg
@@ -171,9 +171,9 @@ endef
 #    make misra-check
 # @pre MISRA checker rules assume your repository as a misra folder in the
 #    top-level directories with the records and permits subdirectories (see doc).
-# @param1 space separated list of C source files
-# @param2 space separated list of C header files
-# @param3 a list of preprocessor flags, including header files root path
+# @param cfiles space separated list of C source files
+# @param hfiles space separated list of C header files
+# @param paths a list of preprocessor flags, including header files root path
 # @example $(call ci, misra, file1.c file2.c, file3.h, -I/my/include/dir/inc)
 
 misra_ci_dir:=$(ci_dir)/misra

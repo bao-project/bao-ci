@@ -196,9 +196,9 @@ define cppcheck_misra_addon
 }"
 endef
 
-cppcheck_misra_flags:= --quiet --enable=all --error-exitcode=1 \
+cppcheck_misra_flags= --quiet --enable=all --error-exitcode=1 \
 	--library=$(cppcheck_type_cfg) --addon=$(cppcheck_misra_addon) \
-	--suppressions-list=$(misra_suppresions)
+	--suppressions-list=$(misra_suppresions) $(_misra_flags)
 zephyr_coding_guidelines:=https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/doc/contribute/coding_guidelines/index.rst
 
 ifeq ($(MISRA_C2012_GUIDELINES),)
@@ -218,7 +218,7 @@ $(misra_suppresions): $(misra_cppcheck_supressions) $(misra_deviation_suppressio
 	@cat $^ > $@
 
 misra-check: $(misra_rules) $(cppcheck_type_cfg) $(misra_suppresions)
-	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_flags) $(_misra_c_files)
+	@$(CPPCHECK) $(cppcheck_misra_flags) $(_misra_c_files)
 
 misra-clean:
 	-rm -f $(misra_rules) $(misra_suppresions) $(misra_deviation_suppressions)

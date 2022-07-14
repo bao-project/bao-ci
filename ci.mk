@@ -16,6 +16,8 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 gitlint:
 	@gitlint -C $(ci_dir)/.gitlint --commits $(GITLINT_BASE)..
 
+non_build_targets+=gitlint
+
 #############################################################################
 
 # License Checking

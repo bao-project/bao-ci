@@ -56,3 +56,15 @@ jobs:
         with:
           submodules: recursive
       - run: make PLATFORM=${{ matrix.platform }} misra-check
+
+  his:
+    runs-on: ubuntu-latest
+    container: baoproject/bao:latest
+    strategy:
+      matrix:
+        platform: ["qemu-aarch64-virt", "qemu-riscv64-virt"]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - run: make PLATFORM=${{ matrix.platform }} his-check

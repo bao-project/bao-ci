@@ -20,6 +20,7 @@ are rab in the docker container by calling the rules defined in makefile.
 The following checks are provided:
 
 - gitlint: checks commit messages follow the conventional commit style
+- license-check: for checking source files contain an SPDX license identifier 
 - pylint: python formatting and linting
 - yamllint: yaml formatting and linting
 - format: C formatting

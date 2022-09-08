@@ -34,6 +34,8 @@ RUN apt-get update && apt-get install -y \
     pip3 install sphinx-rtd-theme && \
     pip3 install sphinx-tabs && \
     pip3 install doc8 && \
+    pip3 install psutil && \
+    pip3 install pyserial && \
     npm install -g cspell@latest && \
     mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
     mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \

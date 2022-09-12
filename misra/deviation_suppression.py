@@ -33,13 +33,19 @@ def filter_annotations(file_name):
 
     """Generatates the filtered misra annotations for a file"""
 
-    file = open(file_name)
-    for lineno, line in enumerate(file):
-        match = re.search(MISRA_DEV_REGEX, line)
-        if match is None:
-            continue
-        (start, end) = match.span()
-        yield (lineno, line[start:end])
+    try:
+        file = open(file_name, encoding="utf-8")
+    except FileNotFoundError:
+        eprint(f'Can\'t open file \'{file_name}\'')
+        return
+
+    with file:
+        for lineno, line in enumerate(file):
+            match = re.search(MISRA_DEV_REGEX, line)
+            if match is None:
+                continue
+            (start, end) = match.span()
+            yield (lineno, line[start:end])
 
 def process_deviations(file_name):
 

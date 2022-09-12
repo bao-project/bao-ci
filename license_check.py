@@ -25,17 +25,18 @@ def check_copyright(filename, copyright_notice):
     """Check if file `filename` contains a `copyright` notice string"""
 
     try:
-        file = open(filename)
+        file = open(filename, encoding="utf-8")
     except FileNotFoundError:
         eprint(f'Can\'t open file \'{filename}\'')
         return False
 
-    for line in file:
-        if copyright_notice in line:
-            return True
+    with file:
+        for line in file:
+            if copyright_notice in line:
+                return True
 
-    eprint(f'No copyright notice found in {filename}')
-    return False
+        eprint(f'No copyright notice found in {filename}')
+        return False
 
 
 def check_license(filename, spdx_expr):
@@ -46,38 +47,39 @@ def check_license(filename, spdx_expr):
     spdx_regex = r'SPDX-License-Identifier: \(?(?P<license_expr>\S*)\)?'
 
     try:
-        file = open(filename)
+        file = open(filename, encoding="utf-8")
     except FileNotFoundError:
         eprint(f'Can\'t open file \'{filename}\'')
         return False
 
-    for line in file:
+    with file:
+        for line in file:
 
-        if line.strip() == '':
-            continue
+            if line.strip() == '':
+                continue
 
-        # allow not in first line in case of scripts
-        if  line.startswith('#!'):
-            continue
+            # allow not in first line in case of scripts
+            if  line.startswith('#!'):
+                continue
 
-        match = re.search(spdx_regex, line)
-        if match is not None:
-            license_expr_str = match.groupdict()['license_expr']
-            spdx_parser = license_expression.get_spdx_licensing()
-            license_expr_info = spdx_parser.validate(license_expr_str)
-            if license_expr_info.errors:
-                eprint(f'Invalid SPDX expression in \'{filename}\':')
-                for err in license_expr_info.errors:
-                    eprint('\t' + err)
-                return False
-            license_expr = spdx_parser.parse(license_expr_str)
+            match = re.search(spdx_regex, line)
+            if match is not None:
+                license_expr_str = match.groupdict()['license_expr']
+                spdx_parser = license_expression.get_spdx_licensing()
+                license_expr_info = spdx_parser.validate(license_expr_str)
+                if license_expr_info.errors:
+                    eprint(f'Invalid SPDX expression in \'{filename}\':')
+                    for err in license_expr_info.errors:
+                        eprint('\t' + err)
+                    return False
+                license_expr = spdx_parser.parse(license_expr_str)
 
-            if not spdx_parser.contains(spdx_expr, license_expr):
-                eprint(f'\'{license_expr_str}\' in \'{filename}\' ' \
-                    f'does not comply with supplied SPDX expression \'{spdx_expr}\'')
-                return False
+                if not spdx_parser.contains(spdx_expr, license_expr):
+                    eprint(f'\'{license_expr_str}\' in \'{filename}\' ' \
+                        f'does not comply with supplied SPDX expression \'{spdx_expr}\'')
+                    return False
 
-            return True
+                return True
 
     eprint(f'License not found in {filename}')
     return False

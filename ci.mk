@@ -35,11 +35,11 @@ non_build_targets+=gitlint
 license_check_script:=$(ci_dir)/license_check.py
 
 license-check:
-	@$(license_check_script) -l $(spdx_expression) $(lincense_check_files)
+	@$(license_check_script) -l $(spdx_expression) $(license_check_files)
 
 define license
 spdx_expression:=$1
-lincense_check_files:=$2
+license_check_files:=$2
 endef
 
 #############################################################################

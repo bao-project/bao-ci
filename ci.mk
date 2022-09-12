@@ -34,7 +34,7 @@ non_build_targets+=gitlint
 
 license_check_script:=$(ci_dir)/license_check.py
 
-license:
+license-check:
 	@$(license_check_script) -l $(spdx_expression) $(lincense_check_files)
 
 define license

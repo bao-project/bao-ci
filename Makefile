@@ -18,4 +18,11 @@ yaml_files:= \
 	$(root_dir)/misra/deviation_permit_template.yml
 $(call ci, yamllint, $(yaml_files))
 
-ci: license pylint yamllint
+c_files:=$(root_dir)/cppcheck-types.c
+mk_files:=$(root_dir)/Makefile $(root_dir)/ci.mk
+
+all_files:=$(python_scripts) $(yaml_files) $(c_files) $(mk_files)
+
+$(call ci, license, "Apache-2.0", $(all_files))
+
+ci: license-check pylint yamllint

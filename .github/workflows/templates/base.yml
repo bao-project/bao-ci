@@ -29,5 +29,4 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - run: >
-          git config --global --add safe.directory $(realpath .) &&
-          make gitlint GITLINT_BASE=${{ github.event.pull_request.base.sha }}
+          make license-check

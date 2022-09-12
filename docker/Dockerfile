@@ -1,14 +1,14 @@
 # base image
-FROM ubuntu:20.04
+FROM ubuntu:22.10
 ARG DEBIAN_FRONTEND=noninteractive
 
 # docker image arguments
 ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf.tar.xz
 ARG RISCV_TOOLCHAIN_LINK=https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
-ARG CLANG_VERSION=12
+ARG CLANG_VERSION=14
 # use this repo temporarily while the patches for misra fps are not in a new official version
 ARG CPPCHECK_REPO=https://github.com/danmar/cppcheck.git
-ARG CPPCHECK_VERSION=2.8
+ARG CPPCHECK_VERSION=2.9
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
         clang-tidy-$CLANG_VERSION \
         nodejs \
         npm \
-        enchant && \
+        enchant-2 && \
     pip3 install gitlint && \
     pip3 install license-expression && \
     pip3 install pyenchant && \

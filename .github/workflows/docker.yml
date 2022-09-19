@@ -2,7 +2,7 @@ name: Build and Publish Bao Docker Container Image
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths: docker/Dockerfile
 
 jobs:

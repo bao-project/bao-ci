@@ -5,7 +5,7 @@ ci_dir?=$(realpath $(root_dir)/ci)
 cur_dir:=$(realpath .)
 
 CPPCHECK?=cppcheck
-CLANG_VERSION?=12
+CLANG_VERSION?=14
 CLANG-FORMAT?=clang-format-$(CLANG_VERSION)
 CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 

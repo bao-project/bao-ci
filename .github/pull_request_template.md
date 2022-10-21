@@ -26,7 +26,7 @@ If your changes are included in the following categories, please try also to ans
 ### Type of change
 
 Before saving the PR, please delete this description and the below options that are not relevant.
-If you are not sure which type of change are you introducing, please read [Contributing](https://github.com/bao-project/bao-docs/blob/main/source/development/contributing.rst) documentation.
+If you are not sure which type of change are you introducing, please read [Contributing](https://github.com/bao-project/bao-docs/blob/main/source/development/doc_guidelines.rst) documentation.
 
 - **feat**: introduces a new functionality
   - Logical unit: <name>
@@ -45,17 +45,11 @@ If you are not sure which type of change are you introducing, please read [Contr
   - Test unit/suite: <name>
 - **opt**: modifications pertaining only to optimizations
   - Logical unit: <name>
-- **ci**: changes to the CI configuration files and scripts
-  - CI checker unit: <name>
 - **style**: changes that do not affect the meaning of the code (formatting, typos, naming, etc.)
 - **update**: changes that brings a feature, setup, or configuration up to date by adding new or updated information
   - Logical unit: <name>
 
 ## Checklist:
 
-- [ ] The changes follows the documentation guidelines described in [here](https://github.com/bao-project/bao-docs/blob/main/source/development/doc_guidelines.rst).
-- [ ] The changes follows the code documentation guidelines described in [here](https://github.com/bao-project/bao-docs/blob/main/source/development/code_documentation.rst).
-- [ ] The changes follows the coding style guidelines described in [here](https://github.com/bao-project/bao-docs/blob/main/source/development/coding_style.rst).
-- [ ] The changes follows the MISRA guidelines described in [here](https://github.com/bao-project/bao-docs/blob/main/source/development/misra.rst).
 - [ ] The changes generate no new warnings when building the project. If so, I have justified above.
 - [ ] I have run the CI checkers before submitting the PR to avoid unnecessary runs of the workflow.

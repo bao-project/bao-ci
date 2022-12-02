@@ -146,7 +146,7 @@ cppcheck_type_cfg:=$(ci_dir)/.cppcheck-types.cfg
 cppcheck_type_cfg_src:=$(ci_dir)/cppcheck-types.c
 
 $(cppcheck_type_cfg): $(cppcheck_type_cfg_src)
-	@$(CC) -S -o - $< | grep "\->" | sed -r 's/.*->//g' > $@
+	@$(cc) -S -o - $< | grep "\->" | sed -r 's/.*->//g' > $@
 
 cppcheck_suppressions:=$(ci_dir)/.cppcheck-suppress
 cppcheck_flags:= --quiet --enable=all --error-exitcode=1 \

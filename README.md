@@ -126,6 +126,18 @@ If you prefer, you can build the container image locally by running:
 make -C ci/docker build
 ```
 
+---
+
+**NOTE**
+
+The provided Makefile always checks Docker Hub for an updated container
+image. If you are not using it to start the container please make sure the
+image is indeed up to date with the latest Dockefile either by pulling it
+expliclity (i.e. `docker pull baoproject/bao:latest`) or by bulding it yourself
+locally.
+
+---
+
 ## Setting up GitHub Actions
 
 When setting up GitHub Actions' workflows for you repo, each step should make

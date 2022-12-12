@@ -26,7 +26,7 @@ If your changes are included in the following categories, please try also to ans
 ### Type of change
 
 Before saving the PR, please delete this description and the below options that are not relevant.
-If you are not sure which type of change are you introducing, please read [Contributing](https://github.com/bao-project/bao-docs/blob/main/source/development/doc_guidelines.rst) documentation.
+If you are not sure which type of change are you introducing, please read [Contributing](https://github.com/bao-project/bao-docs/blob/main/source/development/contributing.rst) documentation.
 
 - **feat**: introduces a new functionality
   - Logical unit: <name>

@@ -247,5 +247,31 @@ endef
 
 #############################################################################
 
+# Assembler Formatting
+# Provides three make targets:
+#    make asmfmt-check # checks if the provided assembly files are formated correctly
+#    make asmfmt-list # lists assembly files that are not formated correctly
+#    make asmfmt # formats the provided assembly files 
+# @param space-separated list of assembly files
+# @example $(call ci, asmfmt, file1.S fil2.S file3.S)
+
+asmfmt:
+	@asmfmt -w $(_asm_files)
+
+asmfmt-check:
+	@asmfmt -d $(_asm_files)
+
+asmfmt-list:
+	@asmfmt -l $(_asm_files)
+
+.PHONY: asmfmt asmfmt-check asmfmt-list
+non_build_targets+=asmfmt asmfmt-check asmfmt-list
+
+define asmfmt
+_asm_files+=$1
+endef
+
+#############################################################################
+
 ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
 

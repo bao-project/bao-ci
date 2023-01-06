@@ -26,6 +26,7 @@ The following checks are provided:
 - format: C formatting
 - tidy and cppcheck: C static analysis
 - misra: MISRA C checking
+- asmfmt: assembly formatting
 
 ## Setting up CI in a repository
 

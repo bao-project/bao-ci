@@ -92,18 +92,15 @@ $(format_file): $(original_format_file)
 	@cp $< $@
 
 format: $(format_file)
-	@$(CLANG-FORMAT) $(clang_format_flags) -i $(_format_files)
+	@$(CLANG-FORMAT) $(clang_format_flags) -i $(_format_files); \
+	rm $(format_file)
 
 format-check: $(format_file)
-	@diff <(cat $(_format_files)) <($(CLANG-FORMAT) $(clang_format_flags) $(_format_files))
+	@diff <(cat $(_format_files)) <($(CLANG-FORMAT) $(clang_format_flags) $(_format_files)); \
+	rm $(format_file)
 
-format-clean:
-	-@rm -f $(format_file)
-
-clean: format-clean
-
-.PHONY: format format-check format-clean
-non_build_targets+=format format-check format-clean
+.PHONY: format format-check
+non_build_targets+=format format-check
 
 define format
 _format_files+=$1

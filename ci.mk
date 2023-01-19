@@ -250,7 +250,6 @@ endef
 # Assembler Formatting
 # Provides three make targets:
 #    make asmfmt-check # checks if the provided assembly files are formated correctly
-#    make asmfmt-list # lists assembly files that are not formated correctly
 #    make asmfmt # formats the provided assembly files 
 # @param space-separated list of assembly files
 # @example $(call ci, asmfmt, file1.S fil2.S file3.S)
@@ -259,13 +258,10 @@ asmfmt:
 	@asmfmt -w $(_asm_files)
 
 asmfmt-check:
-	@asmfmt -d $(_asm_files)
+	@diff <(cat $(_asm_files)) <(asmfmt $(_asm_files))
 
-asmfmt-list:
-	@asmfmt -l $(_asm_files)
-
-.PHONY: asmfmt asmfmt-check asmfmt-list
-non_build_targets+=asmfmt asmfmt-check asmfmt-list
+.PHONY: asmfmt asmfmt-check
+non_build_targets+=asmfmt asmfmt-check
 
 define asmfmt
 _asm_files+=$1

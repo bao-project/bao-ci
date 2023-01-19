@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y \
     mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
     mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1 && \
-    mkdir /opt/asmfmt && wget -c $ASMFMT_LINK -O - | tar xz -C /opt/asmfmt
+    mkdir /opt/asmfmt && curl -L $ASMFMT_LINK | tar xz -C /opt/asmfmt
 
 # Add generic non-root user
 RUN addgroup bao && adduser -disabled-password --ingroup bao bao

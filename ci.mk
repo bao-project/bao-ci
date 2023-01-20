@@ -1,8 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) Bao Project and Contributors. All rights reserved
 
+$(call check_variable_defined, root_dir, \
+	"To include ci.mk the 'root_dir' must be defined")
+
 ci_dir?=$(realpath $(root_dir)/ci)
 cur_dir:=$(realpath .)
+
+include $(ci_dir)/util.mk
 
 CPPCHECK?=cppcheck
 CLANG_VERSION?=14
@@ -138,6 +143,8 @@ endef
 # Cppcheck static-analyzer
 # Run it by:
 #    make cppcheck
+# @pre the make variable 'cc' must be defined with the target's cross-compiler
+#	to run any cppcheck-based rules
 # @param files a single space-separated list of C files (header or source)
 # @param headers a list of preprocessor flags, including header files root path
 # @example $(call ci, cppcheck, file1.c file2.c file3.h, -I/my/include/dir/inc)
@@ -165,6 +172,8 @@ clean: cppcheck-clean
 non_build_targets+=cppcheck cppcheck-clean
 
 define cppcheck
+$(call check_variable_defined, cc, \
+	"For running cppcheck-based tests 'cc' must be defined")
 _cppcheck_files+=$1
 _cppcheck_flags+=$2
 endef

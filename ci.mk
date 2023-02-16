@@ -16,6 +16,15 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 
 .SECONDEXPANSION:
 
+#############################################################################
+
+# Requirements for new targets:
+# - Each non build target, should be added as a .PHONY target prerequiste.
+# - The non_build_targets variable should be used to add targets that do not
+#   perform a build step.
+
+#############################################################################
+
 # Git Commit message linting
 # Checks if the commit messages follow the conventional commit style from 
 # GITLINT_BASE to the last commit. For example, for checking the last two commits:
@@ -24,6 +33,7 @@ CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 gitlint:
 	@gitlint -C $(ci_dir)/.gitlint --commits $(GITLINT_BASE)..
 
+.PHONY: gitlint
 non_build_targets+=gitlint
 
 #############################################################################
@@ -41,6 +51,9 @@ license_check_script:=$(ci_dir)/license_check.py
 
 license-check:
 	@$(license_check_script) -l $(spdx_expression) $(license_check_files)
+
+.PHONY: license-check
+non_build_targets+=license-check
 
 define license
 spdx_expression:=$1
@@ -60,6 +73,9 @@ pylintrc:=$(ci_dir)/.pylintrc
 pylint: $(pylintrc)
 	@pylint $(_python_scritps)
 
+.PHONY: pylint
+non_build_targets+=pylint
+
 define pylint
 _python_scritps+=$1
 endef
@@ -74,7 +90,9 @@ endef
 
 yamllint:
 	@yamllint --strict $(_yaml_files)
-.PHONY:yamllint
+
+.PHONY: yamllint
+non_build_targets+=yamllint
 
 define yamllint
 _yaml_files+=$1

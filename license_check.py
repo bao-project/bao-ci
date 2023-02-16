@@ -7,6 +7,7 @@
 Check for SPDX license headers and copyright notice in source files
 """
 
+import os
 import sys
 import re
 import argparse
@@ -35,7 +36,7 @@ def check_copyright(filename, copyright_notice):
             if copyright_notice in line:
                 return True
 
-        eprint(f'No copyright notice found in {filename}')
+        eprint(f'Copyright not found in ...\t\t{filename}')
         return False
 
 
@@ -43,7 +44,7 @@ def check_license(filename, spdx_expr):
 
     """Check if 'filename' has a SPDX identifier complying with 'spdx_exr'"""
 
-    # TODO: improve regex to support multiple licenses (AND, OR) and execeptions (WITH)
+    # TODO: improve regex to support multiple licenses (AND, OR) and exceptions (WITH)
     spdx_regex = r'SPDX-License-Identifier: \(?(?P<license_expr>\S*)\)?'
 
     try:
@@ -81,7 +82,7 @@ def check_license(filename, spdx_expr):
 
                 return True
 
-    eprint(f'License not found in {filename}')
+    eprint(f'License not found in ...\t\t{filename}')
     return False
 
 
@@ -121,8 +122,11 @@ def main():
 
     success = True
     for file in args.file:
-        success = check_license(file, spdx_expr) and success
-        success = check_copyright(file, copyright_notice) and success
+
+        rel_path = os.path.relpath(file, os.getcwd())
+
+        success = check_license(rel_path, spdx_expr) and success
+        success = check_copyright(rel_path, copyright_notice) and success
 
     if not success:
         sys.exit(-1)

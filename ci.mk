@@ -84,26 +84,17 @@ endef
 # @param space-separated list of C source or header files
 # @example $(call ci, format, file1.c fil2.c file3.h)
 
-clang_format_flags:=--style=file
-format_file:=$(cur_dir)/.clang-format
-original_format_file:=$(ci_dir)/.clang-format
+format_file:=$(ci_dir)/.clang-format
+clang_format_flags:=--style=file:$(format_file)
 
-$(format_file): $(original_format_file)
-	@cp $< $@
-
-format: $(format_file)
+format:
 	@$(CLANG-FORMAT) $(clang_format_flags) -i $(_format_files)
 
-format-check: $(format_file)
+format-check:
 	@diff <(cat $(_format_files)) <($(CLANG-FORMAT) $(clang_format_flags) $(_format_files))
 
-format-clean:
-	-@rm -f $(format_file)
-
-clean: format-clean
-
-.PHONY: format format-check format-clean
-non_build_targets+=format format-check format-clean
+.PHONY: format format-check
+non_build_targets+=format format-check
 
 define format
 _format_files+=$1

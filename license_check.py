@@ -36,7 +36,7 @@ def check_copyright(filename, copyright_notice):
             if copyright_notice in line:
                 return True
 
-        eprint(f'Copyright not found in ...\t\t{filename}')
+        eprint(f'Copyright not found: \t\t{filename}')
         return False
 
 
@@ -82,7 +82,7 @@ def check_license(filename, spdx_expr):
 
                 return True
 
-    eprint(f'License not found in ...\t\t{filename}')
+    eprint(f'License not found: \t\t{filename}')
     return False
 
 
@@ -106,7 +106,6 @@ def main():
     spdx_expr = args.license
     if not spdx_expr:
         spdx_expr = 'Apache-2.0'
-        eprint(f'No SPDX expression supplied. Using {spdx_expr}.')
     spdx_expr_info = spdx_parser.validate(spdx_expr)
     if spdx_expr_info.errors:
         eprint('Invalid supplied SPDX expression\':')
@@ -118,7 +117,6 @@ def main():
     copyright_notice = args.copyright
     if not copyright_notice:
         copyright_notice = "Copyright (c) Bao Project and Contributors. All rights reserved"
-        eprint(f'No copyright notice supplied. Using {copyright_notice}.')
 
     success = True
     for file in args.file:

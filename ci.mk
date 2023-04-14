@@ -296,7 +296,7 @@ endef
 # Assembler Formatting
 # Provides three make targets:
 #    make asmfmt-check # checks if the provided assembly files are formated correctly
-#    make asmfmt # formats the provided assembly files 
+#    make asmfmt # formats the provided assembly files
 # @param space-separated list of assembly files
 # @example $(call ci, asmfmt, file1.S fil2.S file3.S)
 
@@ -311,6 +311,31 @@ non_build_targets+=asmfmt asmfmt-check
 
 define asmfmt
 _asm_files+=$1
+endef
+
+#############################################################################
+
+# ROPs Checking
+# Checks if the current working branch as increased or decreased the number of
+# ROPs in final binary file. The call to this rule should take into account
+# that any env variable that is used in the build command should be passed
+# (e.g., PLATFORM=<platform>)
+#    make rops-check ENVAR=<value>
+# @param build command of the repo
+# @param path to the binary file
+# @example $(call ci, rops, make PLATFORM=qemu-aarch64-virt, bin/qemu-aarch64-virt/partitioner.elf)
+
+rops_check_script:=$(ci_dir)/rops_check.py
+
+rops-check:
+	@$(rops_check_script) -b "$(build_cmd)" -x $(exe_path)
+
+.PHONY: rops-check
+non_build_targets+=rops-check
+
+define rops
+build_cmd:=$1
+exe_path:=$2
 endef
 
 #############################################################################

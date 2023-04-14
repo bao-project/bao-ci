@@ -56,3 +56,17 @@ jobs:
         with:
           submodules: recursive
       - run: make PLATFORM=${{ matrix.platform }} misra-check
+
+  rops:
+    runs-on: ubuntu-latest
+    container: baoproject/bao:latest
+    strategy:
+      matrix:
+        platform: ["qemu-aarch64-virt"]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - run: git config --global --add safe.directory /__w/bao-partitioner/bao-partitioner
+      - run: make PLATFORM=${{ matrix.platform }} rops-check

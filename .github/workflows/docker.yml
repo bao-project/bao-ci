@@ -24,4 +24,4 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           push: true
-          tags: baoproj/bao:latest
+          tags: baoproject/bao:latest

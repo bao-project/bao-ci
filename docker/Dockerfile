@@ -39,6 +39,9 @@ RUN apt-get update && apt-get install -y \
     pip3 install pyserial && \
     pip3 install doorstop && \
     pip3 install pyspellchecker && \
+    pip3 install ROPgadget && \
+    pip3 install capstone && \
+    pip3 install GitPython && \
     npm install -g cspell@latest && \
     mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
     mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \

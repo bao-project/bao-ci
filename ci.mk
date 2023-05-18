@@ -102,34 +102,6 @@ endef
 
 #############################################################################
 
-# Spell checker
-# Provides one make target:
-#    make spell-check # check if the provided files are correctly spelled
-#
-# @param  -t {txt,yaml}, --type {txt,yaml}
-#     The type of file to be spell-checked. Valid options are 'txt' and 'yaml'.
-# @param   -k KEYS [KEYS ...], --keys KEYS [KEYS ...]
-#     A space-separated list of keys to be excluded from spell-checking.
-# @param   -f FILES [FILES ...], --files FILES [FILES ...]
-#     A space-separated list of file paths to be spell-checked.
-# @param   -d DICTIONARIES [DICTIONARIES ...], --dictionaries DICTIONARIES \
-# [DICTIONARIES ...]
-#     A space-separated list of additional dictionaries to be used for
-#     spell-checking.
-# @example $(call ci, spell_check, -t txt -f file1.txt file2.txt -d \
-# custom_dict.txt)
-
-.PHONY: spell-check
-non_build_targets+=spell-check
-spell-check:
-	@$(ci_dir)/spell_check.py $(_spell_args)
-
-define spell-check
-_spell_args+=$1
-endef
-
-#############################################################################
-
 # C Formatting
 # Provides two make targets:
 #    make format-check # checks if the provided C files are formated correctly

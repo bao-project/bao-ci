@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/bin/python3
 
 # SPDX-License-Identifier: Apache-2.0
@@ -216,7 +215,3 @@ if __name__ == "__main__":
     # If there were any failures, exit with an error code
     if CHECK_FAIL:
         sys.exit(-1)
-=======
-
-# wip
->>>>>>> 6e30066 (feat(HIS): add HIS script into makefile python scripts)

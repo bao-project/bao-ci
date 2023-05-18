@@ -287,5 +287,25 @@ endef
 
 #############################################################################
 
+# HIS Checker
+# Use this rule to run the HIS add-on checker:
+#    make his-check <files>
+# @param files space separated list of files (with path)
+# @example $(call ci, his, file1.c file2.c file3.h)
+
+his_check_script:=$(ci_dir)/his_checker.py
+
+his-check:
+	@$(his_check_script) $(_his_files)
+
+.PHONY: his-check
+non_build_targets+=his-check
+
+define his
+_his_files+=$1
+endef
+
+#############################################################################
+
 ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
 

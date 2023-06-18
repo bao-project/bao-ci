@@ -162,6 +162,14 @@ This command opens an interactive nix-shell with all the Bao-Project dependencie
 make nix-shell
 ```
 
+**Supported Bao-Project Repositories**
+
+- [x] bao-docs
+- [ ] bao-tests (**comming soon**)
+- [ ] bao-demos (**comming soon**)
+- [ ] bao-hypervisor (**comming soon**)
+
+
 ## Setting up GitHub Actions
 
 When setting up GitHub Actions' workflows for you repo, each step should make

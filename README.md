@@ -126,7 +126,6 @@ If you prefer, you can build the container image locally by running:
 ```bash
 make -C ci/docker build
 ```
-
 ---
 
 **NOTE**
@@ -138,6 +137,30 @@ expliclity (i.e. `docker pull baoproject/bao:latest`) or by bulding it yourself
 locally.
 
 ---
+
+## Using the Bao-Project Nix Shell
+
+Nix provides a robust and reproducible environment by encapsulating all necessary dependencies within a controlled environment. This approach effectively eliminates issues associated with version conflicts and missing packages/dependencies, ensuring a seamless and reliable development experience.
+
+We offer a nix-shell environment containing all essential Bao-Project dependencies, allowing developers to effortlessly work across all Bao-Project repositories. The required dependencies will be automatically fetched. If you already have the necessary packages/dependencies installed, Nix will prioritize the ones it fetched, ensuring reproducibility. Once you exit the nix-shell environment, those packages are no longer accessible. The Nix packages are isolated from your system packages, eliminating any risk of corruption.
+
+You can utilize the Bao-Project nix-shell in two ways:  (1) run a standalone command within the Bao-Project nix-shell environment; (2) or open an interactive Bao-Project nix-shell environment.
+
+**Running a Standalone Command**
+
+This command opens a nix-shell, executes the provided user command, and automatically closes the shell.
+
+```bash
+make nix-shell-run cmd="your command"
+```
+
+**Opening a Nix-Shell Environment**
+
+This command opens an interactive nix-shell with all the Bao-Project dependencies.
+
+```bash
+make nix-shell
+```
 
 ## Setting up GitHub Actions
 

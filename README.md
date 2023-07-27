@@ -8,8 +8,11 @@ reproducible manner. It provides two main facilities:
 
 - A [ci.mk](ci.mk) makefile, that defines how the tools used for the checks are
   invoked;
-- A [docker container](docker/Dockerfile) definition which provides a
-reproducible enviroment for running the checks.
+- Reproducible enviroments definitions which provide reproducible enviroments 
+    with the full tool set with correct versions and configurations
+    for running the checks:
+    - A [docker container](docker/Dockerfile);
+    - A [nix shell enviroment](shell.nix).
 
 Besides these two main pillars, the repository contains a number of configuration
 and template files used by the tools and CI process in general.

@@ -342,7 +342,6 @@ endef
 
 #############################################################################
 
-<<<<<<< HEAD
 # reST Formatting
 # Provides one make target:
 #    make rst-format # checks if the provided reST files are formated correctly
@@ -354,7 +353,13 @@ rst-format:
 
 .PHONY: rst-format
 non_build_targets+=rst-format
-=======
+
+define rstformat
+_path_rst_files+=$1
+endef
+
+#############################################################################
+
 # Nix-shell
 # Provides a nix-shell with the bao-project environment (i.e, all bao-project
 # dependencies) which can be used to run the commands/tools used accross all
@@ -378,15 +383,6 @@ non_build_targets+=nix-shell nix-shell-run
 
 define nix-shell-run
 cmd:=$1
-endef
-
-#############################################################################
-
-ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
->>>>>>> feat(nix-shell): Add support for nix-shell
-
-define rstformat
-_path_rst_files+=$1
 endef
 
 #############################################################################

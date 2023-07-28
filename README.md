@@ -12,7 +12,7 @@ reproducible manner. It provides two main facilities:
     with the full tool set with correct versions and configurations
     for running the checks:
     - A [docker container](docker/Dockerfile);
-    - A [nix shell enviroment](shell.nix).
+    - A [nix shell enviroment](nix/shell.nix).
 
 Besides these two main pillars, the repository contains a number of configuration
 and template files used by the tools and CI process in general.
@@ -143,31 +143,60 @@ locally.
 
 ## Using the Bao-Project Nix Shell
 
-Nix provides a robust and reproducible environment by encapsulating all necessary dependencies within a controlled environment. This approach effectively eliminates issues associated with version conflicts and missing packages/dependencies, ensuring a seamless and reliable development experience.
+Nix provides a robust and reproducible environment by encapsulating all
+necessary dependencies within a controlled environment. This approach
+effectively eliminates issues associated with version conflicts and missing 
+packages/dependencies, ensuring a seamless and reliable development experience. 
+To use Nix, please make sure you have 
+[installed Nix]( https://nixos.org/download.html).
 
-We offer a nix-shell environment containing all essential Bao-Project dependencies, allowing developers to effortlessly work across all Bao-Project repositories. The required dependencies will be automatically fetched. If you already have the necessary packages/dependencies installed, Nix will prioritize the ones it fetched, ensuring reproducibility. Once you exit the nix-shell environment, those packages are no longer accessible. The Nix packages are isolated from your system packages, eliminating any risk of corruption.
+We offer a nix-shell environment containing all essential Bao-Project
+dependencies, allowing developers to effortlessly work across all Bao-Project
+repositories. The required dependencies will be automatically fetched. If you
+already have the necessary packages/dependencies installed, Nix will prioritize 
+the ones it fetched, ensuring reproducibility. Once you exit the nix-shell
+environment, those packages are no longer accessible. The Nix packages are
+isolated from your system packages, eliminating any risk of corruption.
 
-You can utilize the Bao-Project nix-shell in two ways:  (1) run a standalone command within the Bao-Project nix-shell environment; (2) or open an interactive Bao-Project nix-shell environment.
+You can utilize the Bao-Project nix-shell in three ways: (1) run a standalone
+command within the Bao-Project nix-shell environment; (2) run a ci rule inside
+the Bao-Project nix-shell environment; or (3) open an interactive Bao-Project
+nix-shell environment.
 
-**Running a Standalone Command**
+**1. Run a Standalone Command**
 
-This command opens a nix-shell, executes the provided user command, and automatically closes the shell.
+This command opens a nix-shell, executes the provided user command, and
+automatically closes the shell.
 
 ```bash
-make nix-shell-run cmd="your command"
+make -C ci/nix nix-shell-run cmd="your command"
 ```
 
-**Opening a Nix-Shell Environment**
+**2. Run a Ci Rule**
 
-This command opens an interactive nix-shell with all the Bao-Project dependencies.
+We provide a Makefile to ease run any command inside the Bao-Project nix-shell. 
+For example, if you want to run the format check in the container just:
 
 ```bash
-make nix-shell
+make -C ci/nix format-check
+```
+
+**Note:** This feature is currently not fully implemented. As of now, only the
+gitlint Ci rule is supported. The remaining Ci rules will be available soon.
+
+**3. Open a Nix-Shell Environment**
+
+This command opens an interactive nix-shell with all the Bao-Project
+ dependencies.
+
+```bash
+make -C ci/nix nix-shell
 ```
 
 **Supported Bao-Project Repositories**
 
 - [x] bao-docs
+- [ ] bao-ci (**comming soon**)
 - [ ] bao-tests (**comming soon**)
 - [ ] bao-demos (**comming soon**)
 - [ ] bao-hypervisor (**comming soon**)

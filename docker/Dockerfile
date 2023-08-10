@@ -24,6 +24,8 @@ RUN apt-get update && apt-get install -y \
         python3-pip \
         yamllint \
         pylint \
+        clang-format-$CLANG_VERSION \
+        clang-tidy-$CLANG_VERSION \
         nodejs \
         npm \
         enchant-2 \

@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
         clang-tidy-$CLANG_VERSION \
         nodejs \
         npm \
+        pmccabe \
         enchant-2 && \
     pip3 install gitlint && \
     pip3 install license-expression && \

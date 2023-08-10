@@ -45,6 +45,9 @@ RUN apt-get update && apt-get install -y \
     mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1 && \
     mkdir /opt/asmfmt && curl -L $ASMFMT_LINK | tar xz -C /opt/asmfmt
 
+# Set execution permissions on the HIS metrics file
+RUN chmod +x his_metrics.py
+
 # Add generic non-root user
 RUN addgroup bao && adduser -disabled-password --ingroup bao bao
 

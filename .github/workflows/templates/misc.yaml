@@ -29,3 +29,13 @@ jobs:
           fetch-depth: 0
       - run: >
           make yamllint
+
+  docformat:
+    runs-on: ubuntu-latest
+    container: baoproject/bao:latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - run: make rst-format

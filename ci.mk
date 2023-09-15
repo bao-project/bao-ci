@@ -340,5 +340,22 @@ endef
 
 #############################################################################
 
-ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))
+# reST Formatting
+# Provides one make target:
+#    make rst-format # checks if the provided reST files are formated correctly
+# @param root folder that contains the reST files
+# @example $(call ci, rstformat, /path/to/doc/folder)
 
+rst-format:
+	@doc8 $(_path_rst_files) --ignore D000
+
+.PHONY: rst-format
+non_build_targets+=rst-format
+
+define rstformat
+_path_rst_files+=$1
+endef
+
+#############################################################################
+
+ci=$(eval $(call $1, $2, $3, $4, $5, $6, $7, $8, $9))

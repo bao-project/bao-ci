@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y \
     pip3 install doc8 && \
     pip3 install psutil && \
     pip3 install pyserial && \
+    pip3 install pydevicetree && \
     pip3 install doorstop && \
     pip3 install pyspellchecker && \
     pip3 install ROPgadget && \

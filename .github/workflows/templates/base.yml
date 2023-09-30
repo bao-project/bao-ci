@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          submodules: recursive
           fetch-depth: 0
       - run: git config --global --add safe.directory $(realpath .)
       - if: ${{ github.event_name == 'pull_request' }}

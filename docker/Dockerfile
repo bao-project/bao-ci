@@ -40,7 +40,8 @@ RUN apt-get update && apt-get install -y \
         tree \
         vim \
         nano \
-        device-tree-compiler
+        device-tree-compiler \
+	cflow \
 
 # Install python packages
 RUN pip3 install \

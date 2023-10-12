@@ -159,7 +159,7 @@ jobs:
     runs-on: ubuntu-latest
     container: baoproject/bao:latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - run: make <example-ci-check-target>

@@ -15,7 +15,7 @@ jobs:
       matrix:
         platform: ["qemu-aarch64-virt", "qemu-riscv64-virt"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - run: make PLATFORM=${{ matrix.platform }}
@@ -27,7 +27,7 @@ jobs:
       matrix:
         platform: ["qemu-aarch64-virt", "qemu-riscv64-virt"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - run: make PLATFORM=${{ matrix.platform }} format-check
@@ -39,7 +39,7 @@ jobs:
       matrix:
         platform: ["qemu-aarch64-virt", "qemu-riscv64-virt"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - run: make PLATFORM=${{ matrix.platform }} tidy
@@ -52,7 +52,7 @@ jobs:
       matrix:
         platform: ["qemu-aarch64-virt", "qemu-riscv64-virt"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - run: make PLATFORM=${{ matrix.platform }} misra-check

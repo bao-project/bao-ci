@@ -10,7 +10,7 @@ cur_dir:=$(realpath .)
 include $(ci_dir)/util.mk
 
 CPPCHECK?=cppcheck
-CLANG_VERSION?=14
+CLANG_VERSION?=18
 CLANG-FORMAT?=clang-format-$(CLANG_VERSION)
 CLANG-TIDY?=clang-tidy-$(CLANG_VERSION)
 

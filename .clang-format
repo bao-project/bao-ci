@@ -9,9 +9,8 @@ AlignConsecutiveBitFields: None
 AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: Left
 AlignOperands: DontAlign
-AlignTrailingComments: true
+AlignTrailingComments: false
 AllowAllArgumentsOnNextLine: false
-AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Always
@@ -39,25 +38,26 @@ BraceWrapping:
   SplitEmptyRecord: false
 BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: false
+BreakBeforeInlineASMColon: OnlyMultiline
 BreakStringLiterals: true 
 ColumnLimit:     80
 ContinuationIndentWidth: 4
-DeriveLineEnding: true
 DerivePointerAlignment: false
 DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
-ForEachMacros:
-  - foreach
-  - Q_FOREACH
-  - BOOST_FOREACH
 IncludeBlocks: Preserve
 IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentGotoLabels: false
-IndentPPDirectives: None
+IndentPPDirectives: BeforeHash
 IndentWidth:     4
 IndentWrappedFunctionNames: false
+InsertBraces: true  
+InsertNewlineAtEOF: true
+InsertTrailingCommas: None
+KeepEmptyLinesAtEOF: false
 KeepEmptyLinesAtTheStartOfBlocks: false
+LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd:   ''
 MaxEmptyLinesToKeep: 1
@@ -65,12 +65,22 @@ PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 1000
 PenaltyBreakComment: 10
 PenaltyBreakFirstLessLess: 10
+PenaltyBreakOpenParenthesis: 5
 PenaltyBreakString: 10
 PenaltyBreakTemplateDeclaration: 10
-PenaltyExcessCharacter: 100
+PenaltyExcessCharacter: 50
 PenaltyReturnTypeOnItsOwnLine: 100
 PointerAlignment: Left
+# Not using QualigierAlignment as it seems only to affect parameter lists, not
+# variable declarations. May enable it if this changes in future clang-format
+# versions.
+# QualifierAlignment: Custom
+# QualifierOrder: ['static', 'inline', 'type', 'const', 'volatile']
 ReflowComments:  true
+RemoveBracesLLVM: false
+RemoveParentheses: MultipleParentheses
+RemoveSemicolon: true
+SeparateDefinitionBlocks: Leave
 SortIncludes: false
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
@@ -80,11 +90,13 @@ SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: false
 SpaceInEmptyBlock: true
-SpaceInEmptyParentheses: false
+SpacesInParens: Custom
+SpacesInParensOptions:
+    InConditionalStatements: false
+    InEmptyParentheses: false
+    InCStyleCasts: false
+    Other: false
 SpacesBeforeTrailingComments: 1
-SpacesInConditionalStatement: false
-SpacesInCStyleCastParentheses: false
-SpacesInParentheses: false
 SpacesInSquareBrackets: false
 SpaceBeforeSquareBrackets: false
 Standard:        Latest
@@ -92,7 +104,6 @@ StatementMacros:
   - Q_UNUSED
   - QT_REQUIRE_VERSION
 TabWidth:        4
-UseCRLF:         false
 UseTab:          Never
 WhitespaceSensitiveMacros:
   - STRINGIZE

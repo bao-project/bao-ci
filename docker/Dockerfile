@@ -12,7 +12,7 @@ ARG CLANG_VERSION=14
 ARG CPPCHECK_REPO=https://github.com/danmar/cppcheck.git
 ARG CPPCHECK_VERSION=2.9
 
-# install dependencies
+# Install base dependencies
 RUN apt-get update && apt-get install -y \
         git \
         curl \
@@ -24,32 +24,47 @@ RUN apt-get update && apt-get install -y \
         python3-pip \
         yamllint \
         pylint \
-        clang-format-$CLANG_VERSION \
-        clang-tidy-$CLANG_VERSION \
         nodejs \
         npm \
-        enchant-2 && \
-    pip3 install gitlint && \
-    pip3 install license-expression && \
-    pip3 install pyenchant && \
-    pip3 install sphinxcontrib-spelling && \
-    pip3 install sphinx-rtd-theme && \
-    pip3 install sphinx-tabs && \
-    pip3 install doc8 && \
-    pip3 install psutil && \
-    pip3 install pyserial && \
-    pip3 install pydevicetree && \
-    pip3 install doorstop && \
-    pip3 install pyspellchecker && \
-    pip3 install ROPgadget && \
-    pip3 install capstone && \
-    pip3 install GitPython && \
-    npm install -g cspell@latest && \
-    mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck  && \
-    mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
+        enchant-2 \
+        software-properties-common
+
+# Install python packages
+RUN pip3 install \
+        gitlint \
+        license-expression \
+        pyenchant \
+        sphinxcontrib-spelling \
+        sphinx-rtd-theme \
+        sphinx-tabs \
+        doc8 \
+        psutil \
+        pyserial \
+        pydevicetree \
+        doorstop \
+        pyspellchecker \
+        ROPgadget \
+        capstone \
+        GitPython
+
+# Install javascript packages
+RUN npm install -g cspell@latest
+
+# Install static analyzers
+# clang-format and clang-tidy
+RUN apt-get install -y \
+        clang-format-$CLANG_VERSION \
+        clang-tidy-$CLANG_VERSION
+# cppcheck
+RUN mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && \
+        make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck
+# asmfmt
+RUN mkdir /opt/asmfmt && curl -L $ASMFMT_LINK | tar xz -C /opt/asmfmt
+
+# Install toolchains
+RUN mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/aarch32-toolchain && curl $AARCH32_TOOLCHAIN_LINK | tar xJ -C /opt/aarch32-toolchain --strip-components=1 && \
-    mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1 && \
-    mkdir /opt/asmfmt && curl -L $ASMFMT_LINK | tar xz -C /opt/asmfmt
+    mkdir /opt/riscv-toolchain && curl $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1
 
 # Add generic non-root user
 RUN addgroup bao && adduser -disabled-password --ingroup bao bao

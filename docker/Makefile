@@ -7,14 +7,18 @@ DOCKER?=$(shell which docker)
 docker_repo:=baoproject/bao
 docker_tag:=latest
 docker_image:=$(docker_repo):$(docker_tag)
+docker_run_cmd:=$(DOCKER) run --pull=always --rm -it -u bao -v \
+	$(root_dir):$(root_dir) -w $(root_dir) $(docker_image)
 
 override MAKEFLAGS:=$(addprefix -,$(MAKEFLAGS)) --no-print-directory
 
 all .DEFAULT:
 	@echo "Launching docker container..."
-	@$(DOCKER) run --pull=always --rm -it -u bao -v $(root_dir):$(root_dir) -w $(root_dir) \
-		$(docker_image) $(MAKE) $(MAKEFLAGS) $(MAKEOVERRIDES) $@
+	@$(docker_run_cmd) $(MAKE) $(MAKEFLAGS) $(MAKEOVERRIDES) $@
 	@echo "Leaving and destroying docker container..."
+
+shell:
+	@$(docker_run_cmd)
 
 build:
 	@echo "Launching docker container..."
@@ -24,4 +28,4 @@ push: build
 	@echo "Pushing container image to $(docker_repo)"
 	@$(DOCKER) push $(docker_image)
 
-.PHONY: all build push
+.PHONY: all build push shell

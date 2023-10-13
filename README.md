@@ -133,7 +133,7 @@ Finally, if you prefer, you can build the container image locally by running:
 make -C ci/docker build
 ```
 
-In the case you want to use the locally built imaghe, or just not want to fetch
+In the case you want to use the locally built image, or just not want to fetch
 the latest available docker image, when invoking the Makefile you should tell it
 you want to use the local image and not fetch it automatically. This is also
 useful when you don't have a network connection or just want to skip that step

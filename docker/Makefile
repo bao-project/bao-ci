@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) Bao Project and Contributors. All rights reserved
 
-root_dir?=$(realpath ../..)
+ROOT_DIR?=$(realpath ../..)
 
 DOCKER?=$(shell which docker)
 docker_repo:=baoproject/bao

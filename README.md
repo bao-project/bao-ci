@@ -121,6 +121,12 @@ example, if you want to run the format check in the container just:
 make -C ci/docker format-check
 ```
 
+You can also just invoke the container and work directly from its shell:
+
+```bash
+make -C ci/docker shell
+```
+
 If you prefer, you can build the container image locally by running:
 
 ```bash

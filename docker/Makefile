@@ -7,7 +7,11 @@ DOCKER?=$(shell which docker)
 docker_repo:=baoproject/bao
 docker_tag:=latest
 docker_image:=$(docker_repo):$(docker_tag)
-docker_run_cmd:=$(DOCKER) run --pull=always --rm -it -u bao -v \
+DOCKER_PULL?=y
+ifeq ($(DOCKER_PULL),y)
+docker_pull_option:=--pull=always
+endif
+docker_run_cmd:=$(DOCKER) run $(docker_pull_option) --rm -it -u bao -v \
 	$(root_dir):$(root_dir) -w $(root_dir) $(docker_image)
 
 override MAKEFLAGS:=$(addprefix -,$(MAKEFLAGS)) --no-print-directory

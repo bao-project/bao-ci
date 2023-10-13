@@ -127,10 +127,20 @@ You can also just invoke the container and work directly from its shell:
 make -C ci/docker shell
 ```
 
-If you prefer, you can build the container image locally by running:
+Finally, if you prefer, you can build the container image locally by running:
 
 ```bash
 make -C ci/docker build
+```
+
+In the case you want to use the locally built imaghe, or just not want to fetch
+the latest available docker image, when invoking the Makefile you should tell it
+you want to use the local image and not fetch it automatically. This is also
+useful when you don't have a network connection or just want to skip that step
+to speed up the command. For example:
+
+```bash
+make -C ci/docker DOCKER_PULL=n format-check
 ```
 
 ---

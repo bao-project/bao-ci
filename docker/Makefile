@@ -12,7 +12,7 @@ override MAKEFLAGS:=$(addprefix -,$(MAKEFLAGS)) --no-print-directory
 
 all .DEFAULT:
 	@echo "Launching docker container..."
-	-@$(DOCKER) run --pull=always --rm -it -u bao -v $(root_dir):$(root_dir) -w $(root_dir) \
+	@$(DOCKER) run --pull=always --rm -it -u bao -v $(root_dir):$(root_dir) -w $(root_dir) \
 		$(docker_image) $(MAKE) $(MAKEFLAGS) $(MAKEOVERRIDES) $@
 	@echo "Leaving and destroying docker container..."
 

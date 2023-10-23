@@ -9,6 +9,8 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
+import re
 
 def process_calling(files, threshold):
     """
@@ -102,13 +104,30 @@ def process_vocf(files, threshold):
 
 def process_ap_cg_cycle(files, threshold):
     """
-    Process the ap_cg_cycle metric
+	Detect if there are any recursive functions.
     """
 
-    print(f"Processing AP_CG_CYCLE metric with threshold {threshold}] for files: \
-          {', '.join(files)}")
-
-    return 0
+    metric_fail = 0
+    cflow = "cflow -l -r "
+    print("== Checking the number of recursive functions ==")
+    pattern = r'\{\s*(\d+)\}\s+(.+?)\s+<(.+?)\sat\s(.+):(\d+)> \(R\)'
+    pattern_re = re.compile(pattern)
+    for file in files.files:
+        if file.endswith(".c"):
+            cflow_output = os.popen(f"{cflow} {file}").read()
+            matches = pattern_re.findall(cflow_output)
+            for match in matches:
+                depth = int(match[0])
+                if depth == 0:
+                    file_path = match[3]
+                    function = match[2]
+                    line_number = match[4]
+                    print(f"At {file_path.split('src', 1)[1]} ({line_number}): "
+                          f"{function} is a recursive function. "
+                          f"Recursive functions are not allowed.")
+                    metric_fail += 1
+    print(f"== Check done with {metric_fail} error(s) ==\n")
+    return metric_fail
 
 def process_v_g(files, threshold):
     """

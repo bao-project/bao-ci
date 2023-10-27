@@ -42,7 +42,7 @@ BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: false
 BreakBeforeInlineASMColon: Never
 BreakStringLiterals: true 
-ColumnLimit:     80
+ColumnLimit:     100
 ContinuationIndentWidth: 4
 DerivePointerAlignment: false
 DisableFormat: false

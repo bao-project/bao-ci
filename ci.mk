@@ -349,7 +349,7 @@ endef
 # @example $(call ci, rstformat, /path/to/doc/folder)
 
 rst-format:
-	@doc8 $(_path_rst_files) --ignore D000
+	@doc8 $(_path_rst_files) --ignore D000 --max-line-length 99
 
 .PHONY: rst-format
 non_build_targets+=rst-format

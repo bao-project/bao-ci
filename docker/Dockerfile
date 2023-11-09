@@ -27,7 +27,14 @@ RUN apt-get update && apt-get install -y \
         nodejs \
         npm \
         enchant-2 \
-        software-properties-common
+        software-properties-common \
+        ninja-build \
+        pkg-config \
+        libglib2.0-dev \
+        libpixman-1-dev \
+        libslirp-dev \
+        bison \
+        flex \
 
 # Install python packages
 RUN pip3 install \

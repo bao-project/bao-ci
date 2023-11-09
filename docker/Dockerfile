@@ -35,6 +35,9 @@ RUN apt-get update && apt-get install -y \
         libslirp-dev \
         bison \
         flex \
+        tree \
+        vim \
+        nano
 
 # Install python packages
 RUN pip3 install \

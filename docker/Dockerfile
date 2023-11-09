@@ -78,6 +78,11 @@ RUN mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /op
 # Add generic non-root user
 RUN addgroup bao && adduser -disabled-password --ingroup bao bao
 
+# Add qemu-riscv64-virt
+RUN git clone https://github.com/qemu/qemu.git /opt/qemu-riscv64-virt --depth 1 --branch v7.2.0 && \
+    cd /opt/qemu-riscv64-virt/ && ./configure --target-list=riscv64-softmmu --enable-slirp && \
+    make -j$(nproc) && \
+    make install
 # setup environment
 ENV PATH=$PATH:/opt/aarch64-toolchain/bin
 ENV PATH=$PATH:/opt/aarch32-toolchain/bin

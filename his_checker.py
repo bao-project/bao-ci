@@ -9,6 +9,7 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
 
 def process_calling(files, threshold):
     """
@@ -85,12 +86,42 @@ def process_return(files, threshold):
 
 def process_stmt(files, threshold):
     """
-    Process the stmt metric
+    Process number of statements in each function. This function checks each function in the
+    provided files for their number of statements. If the number of statements in a function
+    exceeds the defined threshold, an error message is printed and the error count is incremented.
+
+    Args:
+        files: A list of file paths to check for statements.
+        threshold: The maximum number statements allowed in a function.
+
+    Returns:
+        The number of files that exceed the statements threshold.
     """
 
-    print(f"Processing STMT metric with threshold [1-{threshold}] for files: {', '.join(files)}")
+    metric_fail = 0
+    pmccabe_stat_index = 2
+    function_index = 5
+    statements_tool = "pmccabe -c "
 
-    return 0
+    print("--------------------------------------------")
+    print(f"Processing STMT metric with threshold [1-{threshold}]")
+    print("--------------------------------------------")
+
+    # Process each file
+    for file in files:
+        # Run 'pmccabe' on the file and split the output into lines
+        sline = os.popen(statements_tool + str(file)).read().split('\n')
+
+        for fields in [line.split('\t') for line in sline[:-1]]:
+            statements = int(fields[pmccabe_stat_index])
+
+            if statements > threshold:
+                func_name = fields[function_index].split()
+                print("At " + file + " function " + func_name[1] + " has a total of " +
+                      str(statements) + " statements")
+                metric_fail += 1
+
+    return metric_fail
 
 def process_vocf(files, threshold):
     """

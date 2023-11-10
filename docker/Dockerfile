@@ -37,7 +37,8 @@ RUN apt-get update && apt-get install -y \
         flex \
         tree \
         vim \
-        nano
+        nano \
+        device-tree-compiler
 
 # Install python packages
 RUN pip3 install \

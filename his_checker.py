@@ -9,6 +9,7 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
 
 def process_calling(files, threshold):
     """
@@ -30,12 +31,51 @@ def process_calls(files, threshold):
 
 def process_comf(files, threshold):
     """
-    Process the comf metric
+    Process the relationship of the number of comments (outside of and within functions) to the
+    number of statements. Statements are counted using the pmmcabe tool, while the comments are
+    counted using pygount.
+
+    Args:
+        files: A list of file paths to check ratio of comments to statements.
+        threshold: The minimum ratio allowed.
+
+    Returns:
+        The number of files that don't comply with comment ratio threshold.
     """
 
-    print(f"Processing COMF metric with threshold >{threshold} for files: {', '.join(files)}")
+    metric_fail = 0
+    total_stmts = 0
+    stmt_index = 2
+    cmnt_index = 21
+    license_cmnt_size = 4
 
-    return 0
+    print("--------------------------------------------")
+    print(f"Processing COMF metric with threshold >{threshold}")
+    print("--------------------------------------------")
+
+    # Process each file
+    for file in files:
+        # Run 'pmccabe' on the file and split the output into lines
+        sline = os.popen("pmccabe -c " + str(file)).read().split('\n')
+
+        for fields in [line.split('\t') for line in sline[:-1]]:
+            stmts = int(fields[stmt_index])
+            total_stmts = total_stmts + stmts
+
+        # Run 'pygount' on the file and split the output into lines
+        lines = os.popen("pygount --format=cloc-xml " + str(file)).read().split(' ')
+
+        if lines[cmnt_index].startswith("comment"):
+            cmnts = int(lines[cmnt_index].split("=")[1].replace('"', ''))
+
+            if total_stmts != 0:
+                cmnt_density = (cmnts - license_cmnt_size)/total_stmts
+                if cmnt_density < threshold:
+                    print(f"At {file} comment density is {cmnt_density:.2f}")
+                    metric_fail += 1
+        total_stmts = 0
+
+    return metric_fail
 
 def process_goto(files, threshold):
     """

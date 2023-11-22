@@ -9,6 +9,7 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
 
 def process_calling(files, threshold):
     """
@@ -39,12 +40,38 @@ def process_comf(files, threshold):
 
 def process_goto(files, threshold):
     """
-    Process the goto metric
+    Process number of 'goto' statements. This function checks each function in the provided files
+    for 'goto' statements. If the number of 'goto' statements in a function exceeds the defined
+    threshold, an error message is printed and the error count is incremented.
+
+    Args:
+        files: A list of file paths to check for 'goto' statements.
+        threshold: The maximum number of 'goto' statements allowed in a function.
+
+    Returns:
+        The number of files that exceed the 'goto' statement threshold.
     """
 
-    print(f"Processing GOTO metric with threshold {threshold} for files: {', '.join(files)}")
+    metric_fail = 0
+    qmcalc_goto_index = 18
+    goto_tool = "qmcalc "
 
-    return 0
+    print("--------------------------------------------")
+    print(f"Processing GOTO metric with threshold >{threshold}")
+    print("--------------------------------------------")
+
+    # Process each file
+    for file in files:
+        # Run 'qmcalc' on the file and split the output into lines
+        sline = os.popen(goto_tool + str(file)).read().split('\n')
+
+        for fields in [line.split('\t') for line in sline[:-1]]:
+            if int(fields[qmcalc_goto_index]) > threshold:
+                print("At " + file + " there is " + fields[qmcalc_goto_index] + " goto statements")
+                metric_fail += 1
+
+    return metric_fail
+
 
 def process_level(files, threshold):
     """

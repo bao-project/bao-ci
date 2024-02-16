@@ -369,13 +369,15 @@ endef
 his_check_script:=$(ci_dir)/his_checker.py
 
 his-check:
-	@$(his_check_script) $(_his_files)
+	@$(his_check_script) -f $(_his_files) $(_his_metrics) -e $(_his_exclude)
 
 .PHONY: his-check
 non_build_targets+=his-check
 
 define his
 _his_files+=$1
+_his_metrics+=$2
+_his_exclude+=$3
 endef
 
 #############################################################################

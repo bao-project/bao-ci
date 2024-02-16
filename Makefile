@@ -12,7 +12,7 @@ python_scripts:= \
 	$(root_dir)/misra/deviation_suppression.py \
 	$(root_dir)/license_check.py \
 	$(root_dir)/spell_check.py   \
-	$(root_dir)/rops_check.py
+	$(root_dir)/rops_check.py	\
 	$(root_dir)/his_checker.py
 $(call ci, pylint, $(python_scripts))
 

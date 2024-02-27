@@ -9,6 +9,8 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
+import re
 
 def process_calling(files, threshold):
     """
@@ -57,13 +59,41 @@ def process_level(files, threshold):
 
 def process_param(files, threshold):
     """
-    Process the parameters metric
+    Process number of parameters in a function. This function checks each function in the provided
+    files for the number of parameters. If the number of parameters in a function exceeds the
+    defined threshold, an error message is printed and the error count is incremented.
+
+    Args:
+        files: A list of file paths to check for the number of parameters.
+        threshold: The maximum allowed number of parameters.
+
+    Returns:
+        The number of files that exceed the parameters threshold.
     """
 
-    print(f"Processing PARAMETERS metric with threshold [0-{threshold}] for files: \
-          {', '.join(files)}")
+    metric_fail = 0
+    cflow = "cflow -l"
 
-    return 0
+    print("--------------------------------------------")
+    print(f"Processing PARAM metric with threshold >{threshold}")
+    print("--------------------------------------------")
+
+    # Process each file
+    for file in files:
+        with os.popen(f"{cflow} {file}") as pipe:
+            lines = pipe.read()
+        pattern = r'\{.*?\}*(\w+)\(.*?\(([^)]*)\) at ([^:]+):(\d+)'
+        matches = re.findall(pattern, lines)
+        for function_name, parameters, file_path, line_number in matches:
+            parameters = \
+            [param.strip() for param in parameters.split(',') if param.strip()]
+            num_param = len(parameters)
+            if num_param > threshold:
+                print(f"At {file_path}({line_number}): {function_name} has "
+                      f"{num_param} function parameters.")
+                metric_fail += 1
+
+    return metric_fail
 
 def process_path(files, threshold):
     """

@@ -38,7 +38,8 @@ RUN apt-get update && apt-get install -y \
         tree \
         vim \
         nano \
-        device-tree-compiler
+        device-tree-compiler \
+	pmccabe
 
 # Install python packages
 RUN pip3 install \

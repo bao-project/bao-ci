@@ -9,6 +9,7 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
 
 def process_calling(files, threshold):
     """
@@ -112,12 +113,41 @@ def process_ap_cg_cycle(files, threshold):
 
 def process_v_g(files, threshold):
     """
-    Process the v_g metric
+    Process the V_G, i.e., the McCabe Cyclomatic Complexity for each function in a file. If the
+    complexity exceeds the defined threshold, the metric fails.
+
+    Args:
+        files: A list of file paths to check function cyclomatic complexity.
+        threshold: The maximum complexity allowed in a function.
+
+    Returns:
+        The number of files that exceed the complexity threshold.
     """
 
-    print(f"Processing V_G metric with threshold [1-{threshold}] for files: {', '.join(files)}")
+    metric_fail = 0
+    pmccabe_cc_index = 0
+    function_index = 5
+    cc_tool = "pmccabe -c "
 
-    return 0
+    print("--------------------------------------------")
+    print(f"Processing V_G metric with threshold [1-{threshold}]")
+    print("--------------------------------------------")
+
+    # Process each file
+    for file in files:
+        # Run 'pmccabe' on the file and split the output into lines
+        sline = os.popen(cc_tool + str(file)).read().split('\n')
+
+        for fields in [line.split('\t') for line in sline[:-1]]:
+            cyc_cmplx = int(fields[pmccabe_cc_index])
+
+            if cyc_cmplx > threshold:
+                func_name = fields[function_index].split()
+                print("At " + file + " function " + func_name[1] + " has a complexity of " +
+                      str(cyc_cmplx))
+                metric_fail += 1
+
+    return metric_fail
 
 # Define the list of available metrics, their corresponding functions, and their default thresholds
 METRICS = {

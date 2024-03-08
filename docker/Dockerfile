@@ -38,7 +38,8 @@ RUN apt-get update && apt-get install -y \
         tree \
         vim \
         nano \
-        device-tree-compiler
+        device-tree-compiler \
+	cflow
 
 # Install python packages
 RUN pip3 install \
@@ -56,7 +57,8 @@ RUN pip3 install \
         pyspellchecker \
         ROPgadget \
         capstone \
-        GitPython
+        GitPython \
+        anytree
 
 # Install javascript packages
 RUN npm install -g cspell@latest

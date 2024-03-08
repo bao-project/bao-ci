@@ -9,6 +9,39 @@ Generating HIS metrics check
 
 import sys
 import argparse
+import os
+from anytree import Node
+
+def traverse(node, threshold, failed_nodes=None):
+    """
+    Helper function to traverse the tree create in the process_calls function
+    """
+    if failed_nodes is None:
+        failed_nodes = []
+
+    # Initialize a variable to True. This will remain True if all checks pass.
+    is_new_node = True
+
+    # Check each node in failed_nodes
+    for f_node in failed_nodes:
+        # If the current node's name is the same as a name in failed_nodes
+        if node.name == f_node.name:
+            # Set is_new_node to False and break the loop
+            is_new_node = False
+            break
+
+    # If the node has more children than the threshold and is_new_node is still True
+    if len(node.children) > threshold and is_new_node:
+        # Add the node to failed_nodes
+        failed_nodes.append(node)
+
+    # For each child of the current node
+    for child in node.children:
+        # Recursively traverse the child's subtree, passing the current list of nodes
+        traverse(child, threshold, failed_nodes)
+
+
+    return failed_nodes
 
 def process_calling(files, threshold):
     """
@@ -21,12 +54,61 @@ def process_calling(files, threshold):
 
 def process_calls(files, threshold):
     """
-    Process the calls metric
+    Process the number of called functions. This function checks the number of functions does a
+    particular function calls. If the number of 'calls' in a function exceeds the defined
+    threshold, an error message is printed and the error count is incremented.
+
+    Args:
+        files: A list of file paths to check for 'calls'.
+        threshold: The maximum number of permitted 'calls' in a function.
+
+    Returns:
+        The number of files that exceed the number of 'calls'.
     """
 
-    print(f"Processing CALLS metric with threshold [0-{threshold}] for files: {', '.join(files)}")
+    metric_fail = 0
+    nodes = {}
+    root = None
 
-    return 0
+    print("--------------------------------------------")
+    print(f"Processing CALLS metric with threshold [0-{threshold}]")
+    print("--------------------------------------------")
+
+    # Process each file
+    for file in files:
+        # Run 'cflow' on the file and split the output into lines
+        lines = os.popen(f"cflow -l {file}").read().split('\n')
+
+        trees = []
+        for line in lines:
+
+            if not line.strip():
+                continue  # Skip empty lines
+
+            # Extract level and func/file name
+            lvl, descriptor = line.split('}', 1)
+            lvl = int(lvl.strip('{').strip())
+
+            # Create root node or child node based on level
+            if lvl == 0:
+                root = Node(descriptor)  # Create a new root node
+                trees.append(root)
+                nodes = {0: root}  # Reset nodes dictionary for the new tree
+            else:
+                parent = nodes[lvl - 1]
+                # Update the current node and its parent reference
+                nodes[lvl] = Node(descriptor, parent=parent)
+
+        # Check the number of calls in each tree
+        for root in trees:
+            nodes_failed = traverse(root, threshold)
+            for node in nodes_failed:
+                func_name = node.name.split(')', 1)[0].strip() + ')'
+                print(f"At {file} has {len(node.children)} calls in function {func_name}")
+                metric_fail += 1
+
+    return metric_fail
+
 
 def process_comf(files, threshold):
     """

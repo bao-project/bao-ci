@@ -24,6 +24,8 @@ RUN apt-get update && apt-get install -y \
         python3-pip \
         yamllint \
         pylint \
+        clang-format-$CLANG_VERSION \
+        clang-tidy-$CLANG_VERSION \
         nodejs \
         npm \
         enchant-2 \
@@ -38,7 +40,8 @@ RUN apt-get update && apt-get install -y \
         tree \
         vim \
         nano \
-        device-tree-compiler
+        device-tree-compiler \
+	cflow \
 
 # Install python packages
 RUN pip3 install \

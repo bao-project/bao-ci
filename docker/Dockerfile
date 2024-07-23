@@ -5,7 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # docker image arguments
 ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
 ARG AARCH32_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
-ARG RISCV_TOOLCHAIN_LINK=https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+ARG RISCV_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv64-unknown-elf-13.2.0-ubuntu-22.04.tar.gz
 ARG ASMFMT_LINK=https://github.com/klauspost/asmfmt/releases/download/v1.3.2/asmfmt-Linux_x86_64_1.3.2.tar.gz
 ARG CLANG_VERSION=18
 # use this repo temporarily while the patches for misra fps are not in a new official version

@@ -39,7 +39,10 @@ RUN apt-get update && apt-get install -y \
         vim \
         nano \
         device-tree-compiler \
-        gawk
+        gawk \
+        llvm \
+        clang \
+        lld
 
 # Install python packages
 RUN pip3 install \

@@ -27,6 +27,7 @@ The following checks are provided:
 - tidy and cppcheck: C static analysis
 - misra: MISRA C checking
 - asmfmt: assembly formatting
+- his-check: HIS code metrics checker
 
 ## Setting up CI in a repository
 
@@ -98,7 +99,7 @@ repo, except rules related to the commits themselves such as gitlint.
 For example, for a repo composed of a mix of C an Python sources:
 
 ```
-ci: license pylint format-check tidy cppcheck misra
+ci: license pylint format-check tidy cppcheck misra his-check
 ```
 
 ## Using the Docker Container

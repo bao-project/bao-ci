@@ -12,7 +12,7 @@ ifeq ($(DOCKER_PULL),y)
 docker_pull_option:=--pull=always
 endif
 docker_run_cmd:=$(DOCKER) run $(docker_pull_option) --rm -it -u bao -v \
-	$(root_dir):$(root_dir) -w $(root_dir) $(docker_image)
+	$(ROOT_DIR):$(ROOT_DIR) -w $(ROOT_DIR) $(docker_image)
 
 override MAKEFLAGS:=$(addprefix -,$(MAKEFLAGS)) --no-print-directory
 

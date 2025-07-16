@@ -5,7 +5,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 # docker image arguments
 ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
 ARG AARCH32_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
-ARG RISCV_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv64-unknown-elf-13.2.0-ubuntu-22.04.tar.gz
+ARG RISCV64_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv64-unknown-elf-13.2.0-ubuntu-22.04.tar.gz
+ARG RISCV32_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv32-unknown-elf.tar.gz
 ARG ASMFMT_LINK=https://github.com/klauspost/asmfmt/releases/download/v1.3.2/asmfmt-Linux_x86_64_1.3.2.tar.gz
 ARG CLANG_VERSION=18
 ARG CLANG_TOOLS_VERSION=18
@@ -79,7 +80,8 @@ RUN mkdir /opt/asmfmt && curl -L $ASMFMT_LINK | tar xz -C /opt/asmfmt
 # Install GNU toolchains
 RUN mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /opt/aarch64-toolchain --strip-components=1 && \
     mkdir /opt/aarch32-toolchain && curl $AARCH32_TOOLCHAIN_LINK | tar xJ -C /opt/aarch32-toolchain --strip-components=1 && \
-    mkdir /opt/riscv-toolchain && curl -L $RISCV_TOOLCHAIN_LINK | tar xz -C /opt/riscv-toolchain --strip-components=1
+    mkdir /opt/riscv64-toolchain && curl -L $RISCV64_TOOLCHAIN_LINK | tar xz -C /opt/riscv64-toolchain --strip-components=1 && \
+    mkdir /opt/riscv32-toolchain && curl -L $RISCV32_TOOLCHAIN_LINK | tar xz -C /opt/riscv32-toolchain --strip-components=1
 
 # Install LLVM toolchain
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
@@ -114,7 +116,8 @@ RUN git clone https://github.com/qemu/qemu.git /opt/qemu-aarch64-virt --depth 1 
 # setup environment
 ENV PATH=$PATH:/opt/aarch64-toolchain/bin
 ENV PATH=$PATH:/opt/aarch32-toolchain/bin
-ENV PATH=$PATH:/opt/riscv-toolchain/bin
+ENV PATH=$PATH:/opt/riscv64-toolchain/bin
+ENV PATH=$PATH:/opt/riscv32-toolchain/bin
 ENV PATH=$PATH:/opt/cppcheck
 ENV PATH=$PATH:/opt/asmfmt
 

@@ -5,7 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # docker image arguments
 ARG AARCH64_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
 ARG AARCH32_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
-ARG RISCV64_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv64-unknown-elf-13.2.0-ubuntu-22.04.tar.gz
+ARG RISCV64_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv64-unknown-elf.tar.gz
 ARG RISCV32_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv32-unknown-elf.tar.gz
 ARG ASMFMT_LINK=https://github.com/klauspost/asmfmt/releases/download/v1.3.2/asmfmt-Linux_x86_64_1.3.2.tar.gz
 ARG CLANG_VERSION=18

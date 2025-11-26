@@ -73,7 +73,7 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
         clang-tidy-$CLANG_TOOLS_VERSION
 # cppcheck
 RUN mkdir /opt/cppcheck && git clone $CPPCHECK_REPO --depth 1 --branch $CPPCHECK_VERSION /opt/cppcheck && \
-        make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck
+        make -C /opt/cppcheck FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck install FILESDIR=/usr/share/cppcheck && make -C /opt/cppcheck clean
 # asmfmt
 RUN mkdir /opt/asmfmt && curl -L $ASMFMT_LINK | tar xz -C /opt/asmfmt
 
@@ -101,17 +101,11 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
 # Add generic non-root user
 RUN addgroup bao && adduser -disabled-password --ingroup bao bao
 
-# Add qemu-riscv64-virt and qemu-riscv32-virt
-RUN git clone https://github.com/qemu/qemu.git /opt/qemu-riscv64-virt --depth 1 --branch v7.2.0 && \
-    cd /opt/qemu-riscv64-virt/ && ./configure --target-list=riscv32-softmmu,riscv64-softmmu --enable-slirp && \
+# Add qemu-riscv64-virt, qemu-riscv32-virt and qemu-aarch64-virt
+RUN git clone https://github.com/qemu/qemu.git /opt/qemu --depth 1 --branch v7.2.0 && \
+    cd /opt/qemu && ./configure --target-list=riscv32-softmmu,riscv64-softmmu,aarch64-softmmu --enable-slirp && \
     make -j$(nproc) && \
-    make install
-
-# Add qemu-aarch64-virt
-RUN git clone https://github.com/qemu/qemu.git /opt/qemu-aarch64-virt --depth 1 --branch v7.2.0 && \
-    cd /opt/qemu-aarch64-virt && ./configure --target-list=aarch64-softmmu --enable-slirp && \
-    make -j$(nproc) && \
-    make install
+    make install && make clean
 
 # setup environment
 ENV PATH=$PATH:/opt/aarch64-toolchain/bin

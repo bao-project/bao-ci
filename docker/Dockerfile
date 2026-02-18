@@ -8,6 +8,7 @@ ARG AARCH32_TOOLCHAIN_LINK=https://armkeil.blob.core.windows.net/developer/Files
 ARG RISCV64_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv64-unknown-elf.tar.gz
 ARG RISCV32_TOOLCHAIN_LINK=https://github.com/bao-project/bao-riscv-toolchain/releases/download/gc891d8dc23e/riscv32-unknown-elf.tar.gz
 ARG V850_TOOLCHAIN_LINK=https://github.com/bao-project/gcc-v850-elf-toolchain/releases/download/v14.2.0/gcc-14.2.0-v850-elf.tar.gz
+ARG TRICORE_TOOLCHAIN_LINK=https://github.com/bao-project/bao-tricore-toolchain/releases/download/aurixgcc_09-2025_Linux_x86-x64/aurixgcc_09-2025_Linux_x86-x64.tar.xz
 ARG ASMFMT_LINK=https://github.com/klauspost/asmfmt/releases/download/v1.3.2/asmfmt-Linux_x86_64_1.3.2.tar.gz
 ARG CLANG_VERSION=18
 ARG CLANG_TOOLS_VERSION=18
@@ -83,7 +84,8 @@ RUN mkdir /opt/aarch64-toolchain && curl $AARCH64_TOOLCHAIN_LINK | tar xJ -C /op
     mkdir /opt/aarch32-toolchain && curl $AARCH32_TOOLCHAIN_LINK | tar xJ -C /opt/aarch32-toolchain --strip-components=1 && \
     mkdir /opt/riscv64-toolchain && curl -L $RISCV64_TOOLCHAIN_LINK | tar xz -C /opt/riscv64-toolchain --strip-components=1 && \
     mkdir /opt/riscv32-toolchain && curl -L $RISCV32_TOOLCHAIN_LINK | tar xz -C /opt/riscv32-toolchain --strip-components=1 && \
-    mkdir /opt/v850-toolchain && curl -L $V850_TOOLCHAIN_LINK | tar xz -C /opt/v850-toolchain --strip-components=1
+    mkdir /opt/v850-toolchain && curl -L $V850_TOOLCHAIN_LINK | tar xz -C /opt/v850-toolchain --strip-components=1 && \
+    mkdir /opt/tricore-toolchain && curl -L $TRICORE_TOOLCHAIN_LINK | tar xJ -C /opt/tricore-toolchain --strip-components=1 
 
 # Install LLVM toolchain
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
@@ -115,6 +117,7 @@ ENV PATH=$PATH:/opt/aarch32-toolchain/bin
 ENV PATH=$PATH:/opt/riscv64-toolchain/bin
 ENV PATH=$PATH:/opt/riscv32-toolchain/bin
 ENV PATH=$PATH:/opt/v850-toolchain/bin
+ENV PATH=$PATH:/opt/tricore-toolchain/bin
 ENV PATH=$PATH:/opt/cppcheck
 ENV PATH=$PATH:/opt/asmfmt
 

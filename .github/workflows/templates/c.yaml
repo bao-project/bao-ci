@@ -70,3 +70,15 @@ jobs:
           submodules: recursive
       - run: git config --global --add safe.directory /__w/bao-partitioner/bao-partitioner
       - run: make PLATFORM=${{ matrix.platform }} rops-check
+
+  his:
+    runs-on: ubuntu-latest
+    container: baoproject/bao:latest
+    strategy:
+      matrix:
+        platform: ["qemu-aarch64-virt", "qemu-riscv64-virt"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - run: make PLATFORM=${{ matrix.platform }} his-check

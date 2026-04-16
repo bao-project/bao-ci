@@ -65,7 +65,7 @@ endef
 #############################################################################
 
 # Python linting
-# Checks if the provided python scrpits for syntax and format:
+# Checks if the provided python scripts for syntax and format:
 #    make pylint
 # @param space-separated list of python files
 # @example $(call ci, pylint, file1.py file2.py)
@@ -356,6 +356,25 @@ non_build_targets+=rst-format
 
 define rstformat
 _path_rst_files+=$1
+endef
+
+#############################################################################
+
+# Doxygen build
+# Loads the Doxyfile stored in the current directory, parses the source files
+# and produces a documentation of the codebase, according to its configuration.
+# @param	Doxygen configuration file (Doxyfile).
+#			If not provided, a Doxyfile in the current working directory is used.
+# @note For details, see doxygen manual at https://www.doxygen.nl/manual/index.html.
+
+doxygen:
+	@doxygen $(_doxygen_doxyfile)
+
+.PHONY: doxygen
+non_build_targets+=doxygen
+
+define doxygen
+_doxygen_doxyfile+=$1
 endef
 
 #############################################################################

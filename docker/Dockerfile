@@ -44,7 +44,8 @@ RUN apt-get update && apt-get install -y \
         nano \
         device-tree-compiler \
         gawk \
-        libgnutls28-dev
+        libgnutls28-dev \
+        doxygen
 
 # Install python packages
 RUN pip3 install \

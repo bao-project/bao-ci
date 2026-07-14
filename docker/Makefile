@@ -4,7 +4,7 @@
 ROOT_DIR?=$(realpath ../..)
 
 DOCKER?=$(shell which docker)
-docker_repo:=baoproject/bao
+docker_repo:=baoproject/bao-osyx
 docker_tag:=latest
 docker_image:=$(docker_repo):$(docker_tag)
 DOCKER_PULL?=y

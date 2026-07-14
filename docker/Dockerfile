@@ -59,7 +59,8 @@ RUN pip3 install \
         pyspellchecker \
         ROPgadget \
         capstone \
-        GitPython
+        GitPython \
+        sqr
 
 # Install javascript packages
 RUN npm install -g cspell@latest

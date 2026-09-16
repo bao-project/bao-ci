@@ -66,7 +66,8 @@ RUN pip3 install \
         GitPython \
         Jinja2 \
         prettytable \
-        PyYAML
+        PyYAML \
+        kconfiglib
 
 # Install javascript packages
 RUN npm install -g cspell@latest
